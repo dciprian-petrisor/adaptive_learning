@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
 export default Vue.extend({
   // <= MUST extend Vue instance
@@ -7,13 +7,13 @@ export default Vue.extend({
     // <= data MUST have a return type or TS won't be able to correctly infer its content on `this` context later on
     return {
       counter: 0,
-      input: 'rocket muffin',
-    };
+      input: 'rocket muffin'
+    }
   },
   methods: {
-    increment(): void {
+    increment (): void {
       // <= methods return type MUST be annotated too
-      this.counter++;
-    },
-  },
-});
+      this.counter++
+    }
+  }
+})

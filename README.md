@@ -2,8 +2,6 @@
 
 Adaptive Learning Application
 
-[![GitHub Super-Linter](https://github.com/dciprian-petrisor/adaptive_learning/workflows/Super-Lint/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
 ## Install the dependencies
 ```bash
 yarn

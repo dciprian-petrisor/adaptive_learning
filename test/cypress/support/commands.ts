@@ -56,28 +56,28 @@ declare namespace Cypress {
 // Find elements by "data-cy" attribute, making your tests
 //  more robust with respect to codebase changes
 Cypress.Commands.add('dataCy', (value: string) => {
-  return cy.get(`[data-cy=${value}]`);
-});
+  return cy.get(`[data-cy=${value}]`)
+})
 
 Cypress.Commands.add('testRoute', (route: string) => {
   cy.location().should((loc) => {
-    expect(loc.hash).to.contain(route);
-  });
-});
+    expect(loc.hash).to.contain(route)
+  })
+})
 
 // these two commands let you persist local storage between tests
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LOCAL_STORAGE_MEMORY: Record<string, any> = {};
+const LOCAL_STORAGE_MEMORY: Record<string, any> = {}
 
 Cypress.Commands.add('saveLocalStorage', () => {
   Object.keys(localStorage).forEach((key) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    LOCAL_STORAGE_MEMORY[key] = localStorage[key];
-  });
-});
+    LOCAL_STORAGE_MEMORY[key] = localStorage[key]
+  })
+})
 
 Cypress.Commands.add('restoreLocalStorage', () => {
   Object.keys(LOCAL_STORAGE_MEMORY).forEach((key) => {
-    localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
-  });
-});
+    localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key])
+  })
+})
