@@ -1,4 +1,9 @@
+.git
 .github
 .quasar
 .vscode
 node_modules
+Dockerfile
+.dockerignore
+README.md
+dist

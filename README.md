@@ -2,6 +2,7 @@
 
 Adaptive Learning Application
 
+
 ## Install the dependencies
 ```bash
 yarn
