@@ -6,6 +6,7 @@
   "author": "Petrisor Ciprian <dciprian.petrisor@gmail.com>",
   "private": true,
   "scripts": {
+    "build": "quasar build",
     "generate": "graphql-codegen --config codegen.yml",
     "predev": "yarn generate",
     "lint": "eslint --ext .js,.ts,.vue ./",
@@ -17,8 +18,8 @@
     "test:unit:watchAll": "jest --watchAll",
     "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
     "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\"",
-    "test:e2e": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"cypress open\"",
-    "test:e2e:ci": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"cypress run\""
+    "test:e2e": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"yarn cypress open\"",
+    "test:e2e:ci": "cross-env E2E_TEST=true start-test \"quasar dev\" http-get://localhost:8080 \"yarn cypress run\""
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",
@@ -54,6 +55,7 @@
     "apollo": "^2.33.2",
     "babel-eslint": "^10.0.1",
     "babel-plugin-graphql-tag": "^3.2.0",
+    "cypress": "^7.4.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-loader": "^3.0.3",
