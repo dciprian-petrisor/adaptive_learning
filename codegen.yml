@@ -1,0 +1,15 @@
+overwrite: true
+schema: "http://localhost/graphql/"
+documents: "src/operations/**/*.ts"
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-document-nodes"
+    config:
+      strictScalars: true
+      scalars:
+        DateTime: "Date"
+        ExpectedErrorType: "./extra#ExpectedErrorType"
+        GenericScalar: "any"

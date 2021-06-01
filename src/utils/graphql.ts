@@ -1,16 +1,25 @@
-import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, concat } from '@apollo/client/core'
+import { useAuthStore, AuthStore } from 'src/pinia-store'
+
+let authStore: AuthStore
+
+const apiLink = new HttpLink({ uri: 'http://localhost/graphql/' })
+
+const authLink = new ApolloLink((operation, forward) => {
+  if (!authStore) {
+    authStore = useAuthStore()
+  }
+  if (authStore.loggedIn && authStore.token) {
+    operation.setContext({
+      headers: {
+        Authorization: `JWT ${authStore.token}`
+      }
+    })
+  }
+  return forward(operation)
+})
 
 export default new ApolloClient({
-  link: new HttpLink({
-    uri: 'http://localhost:/graphql/',
-    headers: {
-      'Access-Control-Allow-Origin': true
-    },
-    fetchOptions: {
-      mode: 'no-cors'
-    }
-  }),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: concat(authLink, apiLink)
 })

@@ -3,7 +3,7 @@
     clickable
     tag="a"
     target="_blank"
-    :href="link"
+    @click="onClicked"
   >
     <q-item-section
       v-if="icon"
@@ -30,5 +30,9 @@ export default class EssentialLink extends Vue {
   @Prop({ type: String, default: '' }) readonly caption!: string;
   @Prop({ type: String, default: '#' }) readonly link!: string;
   @Prop({ type: String, default: '' }) readonly icon!: string;
+
+  async onClicked () {
+    return await this.$router.push(this.link)
+  }
 }
 </script>

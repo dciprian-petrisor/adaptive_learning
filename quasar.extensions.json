@@ -9,8 +9,7 @@
     "babel": "babelrc",
     "options": [
       "scripts",
-      "typescript",
-      "wallabyjs"
+      "typescript"
     ]
   },
   "@quasar/testing-e2e-cypress": {

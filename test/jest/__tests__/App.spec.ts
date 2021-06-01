@@ -10,7 +10,8 @@ const { Quasar } = All
 
 function isComponent (value: unknown): value is VueConstructor {
   return (
-    value &&
+    value !== undefined &&
+    value !== null &&
     (value as VueConstructor).component &&
     (value as VueConstructor).component.name != null
   )
