@@ -1,13 +1,3 @@
-<template>
-  <q-page class="column justify-center content-center">
-    <div class="col-grow logo-svg blue q-mt-xl" style="min-height: 200px"></div>
-    <div class="col-grow">
-      <h5> {{result}} </h5>
-    </div>
-  </q-page>
-</template>
-
-<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { useAuthStore } from 'src/pinia-store'
 import { GraphQLError } from 'graphql'
@@ -40,9 +30,3 @@ export default class PageActivate extends Vue {
         })
     }
 }
-</script>
-
-<style lang="sass" scoped>
-@import 'src/css/app.sass'
-
-</style>

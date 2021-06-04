@@ -30,7 +30,7 @@ export default route(function ({ Vue }) {
       // restore state if val is undefined and we have one in local storage
       if (piniaAuthState !== undefined && piniaAuthState != null) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const localStorageState: any = JSON.parse(piniaAuthState)
+        const localStorageState: Record<string, unknown> = JSON.parse(piniaAuthState)
         authStore.$patch(localStorageState)
       }
       storeHydrated = true

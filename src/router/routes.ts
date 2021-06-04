@@ -3,10 +3,9 @@ import { RouteConfig } from 'vue-router'
 const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'landing',
     component: () => import('src/layouts/LandingLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/Landing.vue') }
+      { name: 'landing', path: '', component: () => import('src/pages/Landing/Landing.vue') }
     ],
     meta: {
       requiresNotAuth: true
@@ -14,10 +13,9 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/dashboard',
-    name: 'dashboard',
     component: () => import('src/layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/Dashboard.vue') }
+      { name: 'dashboard', path: '', component: () => import('src/pages/Dashboard/Dashboard.vue') }
     ],
     meta: {
       requiresAuth: true
@@ -28,16 +26,15 @@ const routes: RouteConfig[] = [
     component: () => import('src/layouts/LandingLayout.vue'),
     children: [
       {
-        path: ':token', props: true, component: () => import('src/pages/Activate.vue')
+        name: 'activate', path: ':token', props: true, component: () => import('src/pages/Activate/Activate.vue')
       }
     ]
   },
   {
     path: '/register',
-    name: 'register',
     component: () => import('src/layouts/LandingLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/Register.vue') }
+      { name: 'register', path: '', component: () => import('src/pages/Register/Register.vue') }
     ],
     meta: {
       requiresNotAuth: true
@@ -45,10 +42,9 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/login',
-    name: 'login',
     component: () => import('src/layouts/LandingLayout.vue'),
     children: [
-      { path: '', component: () => import('src/pages/Login.vue') }
+      { name: 'login', path: '', component: () => import('src/pages/Login/Login.vue') }
     ],
     meta: {
       requiresNotAuth: true
@@ -59,7 +55,7 @@ const routes: RouteConfig[] = [
   // but you can also remove it
   {
     path: '*',
-    component: () => import('pages/Error404.vue')
+    component: () => import('src/pages/Error404/Error404.vue')
   }
 ]
 

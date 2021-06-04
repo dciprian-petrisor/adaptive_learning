@@ -4,15 +4,8 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-
-@Component({})
-export default class PageDashboard extends Vue {
-}
-</script>
-
 <style lang="sass" scoped>
 @import 'src/css/app.sass'
 
 </style>
+<script src='./Dashboard.ts' lang='ts'/>
