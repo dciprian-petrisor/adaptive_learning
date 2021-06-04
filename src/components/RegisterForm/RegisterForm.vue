@@ -1,6 +1,7 @@
 <template>
 
     <q-form
+      ref="registerForm"
       @submit="onSubmit"
       class="column q-mt-xl"
       autocorrect="off"
