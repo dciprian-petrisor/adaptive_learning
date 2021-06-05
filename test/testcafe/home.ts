@@ -1,6 +1,5 @@
+/* eslint-disable no-undef */
 import { Selector } from 'testcafe'
-declare const fixture: FixtureFn
-declare const test: TestFn
 
 fixture('Home')
   .page('http://localhost:8080/#/')

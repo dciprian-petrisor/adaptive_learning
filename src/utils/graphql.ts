@@ -2,6 +2,8 @@ import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, concat } from '@apol
 import { useAuthStore, AuthStore } from 'src/pinia-store'
 import fetch from 'cross-fetch'
 
+// const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost'
+
 let authStore: AuthStore
 
 const apiLink = new HttpLink({ fetch: fetch, uri: 'http://localhost/graphql/' })

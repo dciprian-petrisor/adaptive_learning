@@ -20,10 +20,10 @@ export default class RegisterForm extends Vue {
 
   onSubmit () {
     this.loading = true
-    this.authStore.register({ email: this.email, username: this.username, firstName: this.firstName, lastName: this.lastName, password1: this.password, password2: this.password })
-      .then(async () => {
+    return this.authStore.register({ email: this.email, username: this.username, firstName: this.firstName, lastName: this.lastName, password1: this.password, password2: this.password })
+      .then(() => {
         this.$q.notify({ message: 'Success!', type: 'positive' })
-        await this.$router.push({ name: 'dashboard' })
+        return this.$router.push({ name: 'dashboard' })
       })
       .catch((err: ExpectedErrorType) => {
         for (const key of Object.keys(err)) {

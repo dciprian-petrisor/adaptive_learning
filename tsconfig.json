@@ -11,7 +11,7 @@
     ]
   },
   "exclude": [
-    "test/cypress",
+    "test/testcafe",
     "/dist",
     ".quasar",
     "node_modules"

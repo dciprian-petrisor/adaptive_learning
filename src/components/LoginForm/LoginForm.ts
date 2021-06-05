@@ -9,10 +9,10 @@ export default class LoginForm extends Vue {
   password = '';
   isPwd = true;
   onSubmit () {
-    this.authStore.login({ username: this.username, password: this.password })
-      .then(async () => {
+    return this.authStore.login({ username: this.username, password: this.password })
+      .then(() => {
         this.$q.notify({ message: 'Logged in.', type: 'positive' })
-        await this.$router.push({ name: 'dashboard' })
+        return this.$router.push({ name: 'dashboard' })
       })
       .catch((err: ExpectedErrorType) => {
         for (const key of Object.keys(err)) {

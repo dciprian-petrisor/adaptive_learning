@@ -19,8 +19,8 @@
     "test:unit:watchAll": "jest --watchAll",
     "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
     "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\"",
-    "test:e2e": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"yarn cypress open\"",
-    "test:e2e:ci": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"yarn cypress run\""
+    "test:e2e": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chrome:headless test/testcafe\"",
+    "test:e2e:ci": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chrome:headless test/testcafe\""
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",
@@ -48,7 +48,6 @@
     "@graphql-codegen/typescript-operations": "1.17.16",
     "@quasar/app": "^2.2.8",
     "@quasar/quasar-app-extension-testing": "^1.0.3",
-    "@quasar/quasar-app-extension-testing-e2e-cypress": "^3.0.1",
     "@quasar/quasar-app-extension-testing-unit-jest": "^2.2.1",
     "@types/graphql": "^14.5.0",
     "@types/node": "^10.17.15",
@@ -57,19 +56,19 @@
     "apollo": "^2.33.2",
     "babel-eslint": "^10.0.1",
     "babel-plugin-graphql-tag": "^3.2.0",
-    "cypress": "^7.4.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
+    "eslint-webpack-plugin": "^2.5.4",
     "start-server-and-test": "^1.12.4",
-    "testcafe": "^1.14.2"
+    "testcafe": "^1.14.2",
+    "testcafe-vue-selectors": "^3.1.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
