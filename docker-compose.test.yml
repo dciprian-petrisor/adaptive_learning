@@ -26,6 +26,7 @@ services:
     environment:
       - SECRETHUB_CREDENTIAL
       - ADAPTIVE_LEARNING_DB_HOST=postgres
+      - DJANGO_SECRET_KEY="randomkey1234"
     depends_on:
       - postgres
       - nginx
