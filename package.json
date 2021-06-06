@@ -6,7 +6,6 @@
   "author": "Petrisor Ciprian <dciprian.petrisor@gmail.com>",
   "private": true,
   "scripts": {
-    "predev": "yarn generate",
     "dev": "make dev",
     "build": "quasar build",
     "generate": "graphql-codegen --config codegen.yml",
@@ -19,8 +18,8 @@
     "test:unit:watchAll": "jest --watchAll",
     "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
     "concurrently:dev:jest": "concurrently \"quasar dev\" \"jest --watch\"",
-    "test:e2e": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chrome:headless test/testcafe\"",
-    "test:e2e:ci": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chrome:headless test/testcafe\""
+    "test:e2e": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chromium:headless test/testcafe\"",
+    "test:e2e:ci": "cross-env E2E_TEST=true start-server-and-test \"quasar dev\" http://localhost:8080 \"testcafe chromium:headless test/testcafe\""
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",

@@ -8,14 +8,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.x
+
+    - name: Set permissions for scripts
+      run: find . -type f -iname "*.sh" -exec chmod +x {} \;
+
+    - uses: secrethub/actions/env-export@v0.2.1
+      env:
+        SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
+        DOCKER_USERNAME: secrethub://petrci1/adaptive_learning/dev/docker_username
+        DOCKER_ACCESS_TOKEN: secrethub://petrci1/adaptive_learning/dev/docker_token
+
+    - name: Import environment variables from env file
+      id: import-env
+      shell: bash
+      run: |
+        while read line; do
+          echo "$line" >> $GITHUB_ENV
+        done < ./.env
       
-    - run: yarn install --frozen-lockfile
-    - run: yarn build
-    - run: yarn test:unit:ci
+    - name: Override BACKEND_IMAGE_TAG and set GIT relevant variables
+      run: |
+        BACKEND_IMAGE_TAG=${GITHUB_REF##*/} && echo "BACKEND_IMAGE_TAG=$BACKEND_IMAGE_TAG" >> $GITHUB_ENV
+        echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+      
+    - name: DockerHub Login
+      run: echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
     
-    - name: Testcafe run
-      run: yarn test:e2e:ci
+    - name: Run unit tests
+      run: make unit
+    
+    - name: Run e2e tests
+      run: make e2e

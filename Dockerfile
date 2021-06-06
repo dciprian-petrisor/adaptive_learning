@@ -1,5 +1,5 @@
 # base image for all others
-FROM node:14.16.0-buster-slim as base
+FROM node:14.16.1-alpine3.13 as base
 
 WORKDIR /app
 ENV PATH=$PATH:/app/node_modules/.bin
@@ -11,8 +11,10 @@ RUN yarn --frozen-lockfile --production
 # test stage
 FROM base as test
 
+
 # make yarn install deps, this time without the --production flag (we need dev deps for testing)
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile \
+    && apk --no-cache add bash libevent chromium xwininfo xvfb dbus eudev ttf-freefont fluxbox procps tzdata
 COPY . /app
 
 
