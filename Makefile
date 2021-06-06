@@ -23,4 +23,4 @@ unit: clean build
 	docker run --rm $$(cat ${DOCKER_BID_FILE}) ./docker/test/unit.sh
 
 e2e:
-	docker compose -f "docker-compose.test.yml" up --force-recreate --remove-orphans --build -V --abort-on-container-exit --exit-code-from frontend
+	docker-compose -f "docker-compose.test.yml" up --force-recreate --remove-orphans --build -V --abort-on-container-exit --exit-code-from frontend
