@@ -26,7 +26,7 @@ dev: clean build
 
 unit: DOCKER_BUILD_TARGET:=test
 unit: clean build
-	docker run -ti --rm $$(cat ${DOCKER_BID_FILE}) quasar build && ${UNIT_TEST_COMMAND}
+	docker run --rm $$(cat ${DOCKER_BID_FILE}) quasar build && ${UNIT_TEST_COMMAND}
 
 e2e:
 	docker compose -f "docker-compose.test.yml" up --force-recreate --remove-orphans --build -V --abort-on-container-exit --exit-code-from frontend
