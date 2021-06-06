@@ -27,7 +27,10 @@ jobs:
         done < ./.env
       
     - name: Override BACKEND_IMAGE_TAG and set GIT relevant variables
+      env:
+        SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
       run: |
+        echo "SECRETHUB_CREDENTIAL=$SECRETHUB_CREDENTIAL" >> $GITHUB_ENV
         BACKEND_IMAGE_TAG=${GITHUB_REF##*/} && echo "BACKEND_IMAGE_TAG=$BACKEND_IMAGE_TAG" >> $GITHUB_ENV
         echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
       
