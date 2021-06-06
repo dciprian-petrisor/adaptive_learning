@@ -5,11 +5,10 @@ DOCKER_BID_FILE := /tmp/docker.bid
 DOCKER_BUILD_DEFAULT_ARGS := --iidfile ${DOCKER_BID_FILE}
 DOCKER_BUILD_TARGET := base
 
-
 .PHONY: build dev clean
 
 clean:
-	echo "Pruning images.." && docker system prune -f --volumes
+	echo "Pruning images.." && docker rmi -f $$(docker images -f "dangling=true" -q) || true
 
 build:
 	docker build ${DOCKER_BUILD_DEFAULT_ARGS} --target ${DOCKER_BUILD_TARGET} $(ARGS) .
@@ -20,7 +19,7 @@ dev: clean build
 
 unit: DOCKER_BUILD_TARGET:=test
 unit: clean build
-	docker run --rm $$(cat ${DOCKER_BID_FILE}) ./docker/test/unit.sh
+	docker run -e CI --rm $$(cat ${DOCKER_BID_FILE}) ./docker/test/unit.sh
 
 e2e:
 	docker-compose -f "docker-compose.test.yml" up --force-recreate --remove-orphans --build -V --abort-on-container-exit --exit-code-from frontend
