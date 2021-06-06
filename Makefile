@@ -26,7 +26,7 @@ unit: clean build
 	
 ci: DOCKER_BUILD_TARGET:=test
 ci: clean build
-	docker run -e CI -t -d --rm ${DOCKER_CI_RUN_DEFAULT_ARGS} $$(cat ${DOCKER_IID_FILE})
+	docker run -e CI -e BACKEND_URL=http://host.docker.internal:9000 -t -d --rm ${DOCKER_CI_RUN_DEFAULT_ARGS} $$(cat ${DOCKER_IID_FILE})
 	docker exec $$(cat ${DOCKER_CID_FILE}) quasar build
 
 unit-ci:
@@ -34,5 +34,5 @@ unit-ci:
 
 e2e-ci:
 	docker-compose -f "docker-compose.test.yml" up -d --force-recreate --remove-orphans --build -V
-	timeout 60 bash -c 'while [[ "$$(curl -s -o /dev/null -w ''%{http_code}'' localhost/graphql/)" != "000" ]]; do sleep 5; done'
+	timeout 60 bash -c 'while [[ "$$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9000/graphql/)" != "000" ]]; do sleep 5; done'
 	docker exec $$(cat ${DOCKER_CID_FILE}) ./docker/test/e2e.sh
