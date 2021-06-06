@@ -4,12 +4,6 @@ ARGS :=
 DOCKER_BID_FILE := /tmp/docker.bid
 DOCKER_BUILD_DEFAULT_ARGS := --iidfile ${DOCKER_BID_FILE}
 DOCKER_BUILD_TARGET := base
-ifdef CI 
-UNIT_TEST_COMMAND := yarn test:unit:ci
-else
-UNIT_TEST_COMMAND := yarn test:unit
-endif
-
 
 
 .PHONY: build dev clean
@@ -26,7 +20,7 @@ dev: clean build
 
 unit: DOCKER_BUILD_TARGET:=test
 unit: clean build
-	docker run --rm $$(cat ${DOCKER_BID_FILE}) quasar build && ${UNIT_TEST_COMMAND}
+	docker run --rm $$(cat ${DOCKER_BID_FILE}) ./docker/test/unit.sh
 
 e2e:
 	docker compose -f "docker-compose.test.yml" up --force-recreate --remove-orphans --build -V --abort-on-container-exit --exit-code-from frontend

@@ -38,7 +38,7 @@ services:
         target: test
     environment: 
        - CI
-    command: ./docker/test.sh
+    command: ./docker/test/e2e.sh
     depends_on:
       - web
 
