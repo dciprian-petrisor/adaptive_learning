@@ -38,8 +38,11 @@ jobs:
     - name: DockerHub Login
       run: echo "$DOCKER_ACCESS_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
     
+    - name: Build CI container and project
+      run: make ci
+    
     - name: Run unit tests
-      run: make unit
+      run: make unit-ci
     
     - name: Run e2e tests
-      run: make e2e
+      run: make e2e-ci

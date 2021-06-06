@@ -4,13 +4,14 @@ FROM node:14.16.1-alpine3.13 as base
 WORKDIR /app
 ENV PATH=$PATH:/app/node_modules/.bin
 COPY package.json yarn.lock ./
-RUN yarn global add @quasar/cli
-RUN yarn --frozen-lockfile --production
+
+RUN apk --no-cache add bash && \
+    yarn global add @quasar/cli \
+    yarn --frozen-lockfile --production
 
 
 # test stage
 FROM base as test
-
 
 # make yarn install deps, this time without the --production flag (we need dev deps for testing)
 RUN yarn --frozen-lockfile \

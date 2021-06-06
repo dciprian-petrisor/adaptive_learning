@@ -32,16 +32,6 @@ services:
       - nginx
     volumes:
       - web-static:/app/static
-    
-  frontend:
-    build:
-        context: .
-        target: test
-    environment: 
-       - CI
-    command: ./docker/test/e2e.sh
-    depends_on:
-      - web
 
 volumes:
   web-static: 
