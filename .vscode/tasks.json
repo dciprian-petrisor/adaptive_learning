@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "command": "quasar dev",
+            "group": "none",
+            "problemMatcher": {
+                    "pattern": {
+                            "regexp": "."
+                    },
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".",
+                        "endsPattern": ".*?Compiled successfully.*?"
+                    }
+                },
+            "label": "quasar: dev",
+            "detail": "quasar dev",
+            "isBackground": true,
+        }
+    ]
+}

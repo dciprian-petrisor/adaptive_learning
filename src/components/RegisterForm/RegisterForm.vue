@@ -11,6 +11,7 @@
       style="min-width:250px;"
     >
      <q-input
+        ref="firstNameInput"
         filled
         v-model="firstName"
         label="Your first name"
@@ -19,6 +20,7 @@
       />
 
       <q-input
+        ref="lastNameInput"
         filled
         v-model="lastName"
         label="Your last name"
@@ -27,6 +29,7 @@
       />
 
       <q-input
+        ref="usernameInput"
         filled
         v-model="username"
         label="Your username"
@@ -36,6 +39,7 @@
       />
 
       <q-input
+        ref="emailInput"
         filled
         v-model="email"
         label="Your email"
@@ -47,6 +51,7 @@
       />
 
       <q-input
+        ref="passwordInput"
         filled
         type="password"
         v-model="password"
@@ -60,6 +65,7 @@
       />
 
     <q-input
+        ref="confirmPasswordInput"
         filled
         type="password"
         v-model="confirmPassword"
@@ -70,7 +76,7 @@
           val => val === password || 'Your passwords do not match!'
         ]"
       />
-        <q-btn label="Submit" type="submit" color="secondary" v-bind:loading="loading"/>
+        <q-btn ref="submitBtn" label="Submit" type="submit" color="secondary" v-bind:loading="loading"/>
     </q-form>
 
 </template>

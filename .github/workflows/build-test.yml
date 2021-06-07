@@ -22,16 +22,17 @@ jobs:
       id: import-env
       shell: bash
       run: |
-        while read line; do
+        while read line || [ -n "$line" ]; do
           echo "$line" >> $GITHUB_ENV
-        done < ./.env
+        done < ./.test.env
       
-    - name: Override BACKEND_IMAGE_TAG and set GIT relevant variables
+    - name: Override BACKEND_IMAGE_TAG, NGINX_IMAGE_TAG and set GIT relevant variables
       env:
         SECRETHUB_CREDENTIAL: ${{ secrets.SECRETHUB_CREDENTIAL }}
       run: |
         echo "SECRETHUB_CREDENTIAL=$SECRETHUB_CREDENTIAL" >> $GITHUB_ENV
         BACKEND_IMAGE_TAG=${GITHUB_REF##*/} && echo "BACKEND_IMAGE_TAG=$BACKEND_IMAGE_TAG" >> $GITHUB_ENV
+        NGINX_IMAGE_TAG=${GITHUB_REF##*/} && echo "NGINX_IMAGE_TAG=$NGINX_IMAGE_TAG" >> $GITHUB_ENV
         echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
         echo "CI=1" >> $GITHUB_ENV
       

@@ -14,6 +14,20 @@
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen",
         "port": 9229
-      }
+      },
+      {
+        "type": "node",
+        "protocol": "inspector",
+        "preLaunchTask": "quasar: dev",
+        "request": "launch",
+        "name": "Launch test files with TestCafe",
+        "program": "${workspaceRoot}/node_modules/testcafe/bin/testcafe.js",
+        "args": [
+            "chromium:headless",
+            "${relativeFile}"
+        ],
+        "console": "integratedTerminal",
+        "cwd": "${workspaceRoot}"
+    }
     ]
   }

@@ -5,8 +5,8 @@
       <div class="col-auto self-center q-mt-xl text-h4 text-weight-thin text-center text-uppercase text-no-wrap">Adaptive Learning</div>
       <div class="col-auto self-center q-mt-xl text-subtitle1 text-weight-regular text-center q-mb-xl">The smart online learning platform.</div>
       <div class="column col-auto self-center">
-      <q-btn id='signUpBtn' class="q-mb-md" label="Sign Up" color="secondary" to="/register" />
-      <q-btn id='loginBtn' class="q-mb-md" label="Login" color="primary" to="login"/>
+      <q-btn ref='signUpBtn' class="q-mb-md" label="Sign Up" color="secondary" to="/register" />
+      <q-btn ref='loginBtn' class="q-mb-md" label="Login" color="primary" to="login"/>
       </div>
     </div>
     <div class="row col-0 col-md-6 justify-center landing-splash-svg-container">

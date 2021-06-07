@@ -4,14 +4,15 @@ ARGS :=
 DOCKER_IID_FILE := /tmp/docker.iid
 DOCKER_CID_FILE := /tmp/docker.cid
 DOCKER_BUILD_DEFAULT_ARGS := --iidfile ${DOCKER_IID_FILE}
-DOCKER_CI_RUN_DEFAULT_ARGS := --cidfile ${DOCKER_CID_FILE}
+DOCKER_CI_RUN_DEFAULT_ARGS := --cidfile ${DOCKER_CID_FILE} -v ${PWD}/mails:/app/mails
 DOCKER_BUILD_TARGET := base
 
 .PHONY: build dev clean
 
 clean:
-	echo "Remove BID and CID files" && rm -f ${DOCKER_IID_FILE} ${DOCKER_CID_FILE}
-	echo "Pruning images.." && docker rmi -f $$(docker images -f "dangling=true" -q) || true
+	echo "Removing BID and CID files..." && rm -f ${DOCKER_IID_FILE} ${DOCKER_CID_FILE}
+	echo "Pruning images..." && docker rmi -f $$(docker images -f "dangling=true" -q) || true
+	echo "Removing mails..." && sudo rm -rf mails
 
 build:
 	docker build ${DOCKER_BUILD_DEFAULT_ARGS} --target ${DOCKER_BUILD_TARGET} $(ARGS) .
@@ -26,13 +27,13 @@ unit: clean build
 	
 ci: DOCKER_BUILD_TARGET:=test
 ci: clean build
-	docker run -e CI -e BACKEND_URL=http://host.docker.internal:9000 -t -d --rm ${DOCKER_CI_RUN_DEFAULT_ARGS} $$(cat ${DOCKER_IID_FILE})
+	docker run --env-file .test.env  -e CI -t -d --rm ${DOCKER_CI_RUN_DEFAULT_ARGS} $$(cat ${DOCKER_IID_FILE})
 	docker exec $$(cat ${DOCKER_CID_FILE}) quasar build
 
 unit-ci:
 	docker exec $$(cat ${DOCKER_CID_FILE}) ./docker/test/unit.sh
 
 e2e-ci:
-	docker-compose -f "docker-compose.test.yml" up -d --force-recreate --remove-orphans --build -V
+	docker-compose --env-file .test.env -f "docker-compose.test.yml" up -d --force-recreate --remove-orphans --build -V
 	timeout 60 bash -c 'while [[ "$$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9000/graphql/)" != "000" ]]; do sleep 5; done'
 	docker exec $$(cat ${DOCKER_CID_FILE}) ./docker/test/e2e.sh

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "typescript": {
+            "options": {
+                "baseUrl": ".",
+                "experimentalDecorators": true,
+                "skipLibCheck": true,
+                "esModuleInterop": true,
+                "types": [
+                    "testcafe",
+                    "quasar"
+                ],
+                "typeRoots": ["test/@types"]
+            }
+        }
+
+    }
+}

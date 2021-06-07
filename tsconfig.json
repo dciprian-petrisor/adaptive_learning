@@ -5,13 +5,14 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "typeRoots": ["test/@types", "src/@types", "node_modules/@types"],
     "types": [
+      "testcafe",
       "jest",
       "quasar"
     ]
   },
   "exclude": [
-    "test/testcafe",
     "/dist",
     ".quasar",
     "node_modules"

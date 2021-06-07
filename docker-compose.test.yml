@@ -22,16 +22,18 @@ services:
   
   web:
     image: "${BACKEND_IMAGE_NAME}:${BACKEND_IMAGE_TAG}"
-    command: ./scripts/docker/run-dev.sh
+    command: secrethub run ./scripts/docker/run-dev.sh
     environment:
       - SECRETHUB_CREDENTIAL
       - ADAPTIVE_LEARNING_DB_HOST=postgres
       - DJANGO_SECRET_KEY="randomkey1234"
+      - ADAPTIVE_LEARNING_EMAIL_BACKEND
     depends_on:
       - postgres
       - nginx
     volumes:
       - web-static:/app/static
+      - ./mails:/tmp/app-messages/mails
 
 volumes:
   web-static: 
