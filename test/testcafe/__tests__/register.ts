@@ -1,11 +1,12 @@
 import { ActivationEmailListener } from '../utils'
-import { Selector } from 'testcafe'
+import { ClientFunction, Selector } from 'testcafe'
 import VueSelector from 'testcafe-vue-selectors'
 
 fixture('Register')
   .page('http://localhost:8080/#/register/')
 
 test('Register and verify an account.', async t => {
+  const getURL = ClientFunction(() => window.location.href)
   const mailListener = new ActivationEmailListener()
   const r = Math.random().toString(36).substring(7)
   const email = `${r}@email.com`
@@ -17,6 +18,11 @@ test('Register and verify an account.', async t => {
     .typeText(VueSelector('ref:confirmPasswordInput'), 'Acomplexpassword123!')
     .click(VueSelector('ref:submitBtn'))
 
+  // assert url changed after submitting (auto log in)
+  const url = await getURL()
+  await t.expect(url).eql('http://localhost:8080/#/dashboard/')
+
+  // validate email
   const mailRaw = await mailListener.mail(60)
   const activateLinkRegex = /(?<link>http:\/\/.*?\/activate\/.*)\s*?$/gm
   const matchResult = mailRaw.match(activateLinkRegex)
