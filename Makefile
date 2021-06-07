@@ -35,5 +35,5 @@ unit-ci:
 
 e2e-ci:
 	docker-compose --env-file .test.env -f "docker-compose.test.yml" up -d --force-recreate --remove-orphans --build -V
-	timeout 60 bash -c 'while [[ "$$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9000/graphql/)" != "000" ]]; do sleep 5; done'
+	timeout 60 bash -c 'while [[ "$$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9000/graphql/)" == "000" ]]; do sleep 5; done'
 	docker exec $$(cat ${DOCKER_CID_FILE}) ./docker/test/e2e.sh
