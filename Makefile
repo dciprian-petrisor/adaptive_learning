@@ -4,7 +4,7 @@ ARGS :=
 DOCKER_IID_FILE := /tmp/docker.iid
 DOCKER_CID_FILE := /tmp/docker.cid
 DOCKER_BUILD_DEFAULT_ARGS := --iidfile ${DOCKER_IID_FILE}
-DOCKER_CI_RUN_DEFAULT_ARGS := --cidfile ${DOCKER_CID_FILE} -v ${PWD}/mails:/app/mails
+DOCKER_CI_RUN_DEFAULT_ARGS := --cidfile ${DOCKER_CID_FILE} -v ${PWD}/mails:/app/mails --add-host=host.docker.internal:host-gateway
 DOCKER_BUILD_TARGET := base
 
 .PHONY: build dev clean
