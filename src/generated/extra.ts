@@ -9,3 +9,7 @@ export interface ExpectedErrorType {
     [key: string]: ExpectedError[];
     nonFieldErrors: ExpectedError[];
 }
+
+export interface Upload {
+    
+}

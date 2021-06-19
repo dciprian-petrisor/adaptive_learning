@@ -1,4 +1,5 @@
 import { ExpectedErrorType } from './extra';
+import { Upload } from './extra';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -51,15 +52,146 @@ export type Scalars = {
    * String, Boolean, Int, Float, List or Object.
    */
   GenericScalar: any;
+  /**
+   * Create scalar that ignores normal serialization/deserialization, since
+   * that will be handled by the multipart request spec
+   */
+  Upload: Upload;
 };
 
-/** An enumeration. */
-export enum AlUserUserType {
-  /** student */
-  A_1 = 'A_1',
-  /** teacher */
-  A_2 = 'A_2'
-}
+export type AllowAuthenticatedAlUserType = Node & {
+  __typename?: 'AllowAuthenticatedALUserType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  dateJoined: Scalars['DateTime'];
+};
+
+export type AllowAuthenticatedAlUserTypeConnection = {
+  __typename?: 'AllowAuthenticatedALUserTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<AllowAuthenticatedAlUserTypeEdge>>;
+};
+
+/** A Relay edge containing a `AllowAuthenticatedALUserType` and its cursor. */
+export type AllowAuthenticatedAlUserTypeEdge = {
+  __typename?: 'AllowAuthenticatedALUserTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<AllowAuthenticatedAlUserType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type AllowAuthenticatedClassRoomMembershipType = Node & {
+  __typename?: 'AllowAuthenticatedClassRoomMembershipType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  user: AllowAuthenticatedAlUserType;
+  classroom: AllowAuthenticatedClassRoomType;
+  memberType: ClassRoomMembershipMemberType;
+};
+
+export type AllowAuthenticatedClassRoomMembershipTypeConnection = {
+  __typename?: 'AllowAuthenticatedClassRoomMembershipTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<AllowAuthenticatedClassRoomMembershipTypeEdge>>;
+};
+
+/** A Relay edge containing a `AllowAuthenticatedClassRoomMembershipType` and its cursor. */
+export type AllowAuthenticatedClassRoomMembershipTypeEdge = {
+  __typename?: 'AllowAuthenticatedClassRoomMembershipTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<AllowAuthenticatedClassRoomMembershipType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type AllowAuthenticatedClassRoomType = Node & {
+  __typename?: 'AllowAuthenticatedClassRoomType';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  coverPhoto?: Maybe<PrivateMediaType>;
+  classroomMembers: AllowAuthenticatedClassRoomMembershipTypeConnection;
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  accessCode?: Maybe<Scalars['String']>;
+  myMembership?: Maybe<AllowAuthenticatedClassRoomMembershipType>;
+};
+
+
+export type AllowAuthenticatedClassRoomTypeClassroomMembersArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  memberType?: Maybe<Scalars['String']>;
+};
+
+export type AllowAuthenticatedClassRoomTypeConnection = {
+  __typename?: 'AllowAuthenticatedClassRoomTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<AllowAuthenticatedClassRoomTypeEdge>>;
+};
+
+/** A Relay edge containing a `AllowAuthenticatedClassRoomType` and its cursor. */
+export type AllowAuthenticatedClassRoomTypeEdge = {
+  __typename?: 'AllowAuthenticatedClassRoomTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<AllowAuthenticatedClassRoomType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type AllowSelfAlUserType = Node & {
+  __typename?: 'AllowSelfALUserType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  lastLogin?: Maybe<Scalars['DateTime']>;
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  email: Scalars['String'];
+  /** Designates whether the user can log into this admin site. */
+  isStaff: Scalars['Boolean'];
+  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
+  isActive: Scalars['Boolean'];
+  dateJoined: Scalars['DateTime'];
+  icon?: Maybe<PrivateMediaType>;
+  requiresPasswordReset: Scalars['Boolean'];
+  isAdmin: Scalars['Boolean'];
+  classroomMemberships: AllowAuthenticatedClassRoomMembershipTypeConnection;
+  /** Designates that this user has all permissions without explicitly assigning them. */
+  isSuperuser: Scalars['Boolean'];
+  pk?: Maybe<Scalars['Int']>;
+  archived?: Maybe<Scalars['Boolean']>;
+  verified?: Maybe<Scalars['Boolean']>;
+  secondaryEmail?: Maybe<Scalars['String']>;
+};
+
+
+export type AllowSelfAlUserTypeClassroomMembershipsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  memberType?: Maybe<Scalars['String']>;
+};
 
 /**
  * Archive account and revoke refresh tokens.
@@ -70,6 +202,29 @@ export type ArchiveAccount = {
   __typename?: 'ArchiveAccount';
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
+};
+
+/** An enumeration. */
+export enum ClassRoomMembershipMemberType {
+  /** Student */
+  Student = 'STUDENT',
+  /** Teacher */
+  Teacher = 'TEACHER',
+  /** Owner */
+  Owner = 'OWNER'
+}
+
+export type CreateClassRoomMutationInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateClassRoomMutationPayload = {
+  __typename?: 'CreateClassRoomMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  clientMutationId?: Maybe<Scalars['String']>;
 };
 
 
@@ -88,6 +243,31 @@ export type DeleteAccount = {
 };
 
 
+
+export type JoinClassRoomMutationInput = {
+  accessCode: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type JoinClassRoomMutationPayload = {
+  __typename?: 'JoinClassRoomMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  message?: Maybe<Scalars['String']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type LeaveClassRoomMutationInput = {
+  id: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type LeaveClassRoomMutationPayload = {
+  __typename?: 'LeaveClassRoomMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -229,6 +409,11 @@ export type Mutation = {
   refreshToken?: Maybe<RefreshToken>;
   /** Same as `grapgql_jwt` implementation, with standard output. */
   revokeToken?: Maybe<RevokeToken>;
+  updateIcon?: Maybe<UpdateIconMutation>;
+  createClassroom?: Maybe<CreateClassRoomMutationPayload>;
+  joinClassroom?: Maybe<JoinClassRoomMutationPayload>;
+  leaveClassroom?: Maybe<LeaveClassRoomMutationPayload>;
+  uploadClassroomCoverPhoto?: Maybe<UploadClassRoomCoverPhotoPayload>;
 };
 
 
@@ -284,6 +469,7 @@ export type MutationDeleteAccountArgs = {
 export type MutationUpdateAccountArgs = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
+  requiresPasswordReset?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -322,6 +508,31 @@ export type MutationRefreshTokenArgs = {
 
 export type MutationRevokeTokenArgs = {
   refreshToken: Scalars['String'];
+};
+
+
+export type MutationUpdateIconArgs = {
+  file: Scalars['Upload'];
+};
+
+
+export type MutationCreateClassroomArgs = {
+  input: CreateClassRoomMutationInput;
+};
+
+
+export type MutationJoinClassroomArgs = {
+  input: JoinClassRoomMutationInput;
+};
+
+
+export type MutationLeaveClassroomArgs = {
+  input: LeaveClassRoomMutationInput;
+};
+
+
+export type MutationUploadClassroomCoverPhotoArgs = {
+  input: UploadClassRoomCoverPhotoInput;
 };
 
 /** An object with an ID */
@@ -396,17 +607,23 @@ export type PasswordReset = {
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  me?: Maybe<UserNode>;
-  /** The ID of the object */
-  user?: Maybe<UserNode>;
-  users?: Maybe<UserNodeConnection>;
+export type PrivateMediaType = {
+  __typename?: 'PrivateMediaType';
+  originalFileName?: Maybe<Scalars['String']>;
+  path: Scalars['String'];
+  aluser?: Maybe<AllowAuthenticatedAlUserType>;
+  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
 };
 
-
-export type QueryUserArgs = {
-  id: Scalars['ID'];
+export type Query = {
+  __typename?: 'Query';
+  me?: Maybe<AllowSelfAlUserType>;
+  users?: Maybe<AllowAuthenticatedAlUserTypeConnection>;
+  /** The ID of the object */
+  user?: Maybe<AllowAuthenticatedAlUserType>;
+  myClassrooms?: Maybe<AllowAuthenticatedClassRoomTypeConnection>;
+  /** The ID of the object */
+  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
 };
 
 
@@ -416,14 +633,35 @@ export type QueryUsersArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Float']>;
   username?: Maybe<Scalars['String']>;
-  username_Icontains?: Maybe<Scalars['String']>;
-  username_Istartswith?: Maybe<Scalars['String']>;
-  isActive?: Maybe<Scalars['Boolean']>;
-  status_Archived?: Maybe<Scalars['Boolean']>;
-  status_Verified?: Maybe<Scalars['Boolean']>;
-  status_SecondaryEmail?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  dateJoined?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryMyClassroomsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  accessCode?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  members?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  coverPhoto?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryClassroomArgs = {
+  id: Scalars['ID'];
 };
 
 /** Same as `grapgql_jwt` implementation, with standard output. */
@@ -538,6 +776,32 @@ export type UpdateAccount = {
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
 
+export type UpdateIconMutation = {
+  __typename?: 'UpdateIconMutation';
+  success?: Maybe<Scalars['Boolean']>;
+  icon?: Maybe<PrivateMediaType>;
+};
+
+
+export type UpdateIconMutationIconArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type UploadClassRoomCoverPhotoInput = {
+  file: Scalars['Upload'];
+  id: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type UploadClassRoomCoverPhotoPayload = {
+  __typename?: 'UploadClassRoomCoverPhotoPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  message?: Maybe<Scalars['String']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
 export type UserNode = Node & {
   __typename?: 'UserNode';
   /** The ID of the object. */
@@ -553,29 +817,41 @@ export type UserNode = Node & {
   /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
   isActive: Scalars['Boolean'];
   dateJoined: Scalars['DateTime'];
-  userType: AlUserUserType;
+  icon?: Maybe<PrivateMediaType>;
   requiresPasswordReset: Scalars['Boolean'];
+  isAdmin: Scalars['Boolean'];
+  classroomMemberships: AllowAuthenticatedClassRoomMembershipTypeConnection;
+  classrooms: AllowAuthenticatedClassRoomTypeConnection;
   pk?: Maybe<Scalars['Int']>;
   archived?: Maybe<Scalars['Boolean']>;
   verified?: Maybe<Scalars['Boolean']>;
   secondaryEmail?: Maybe<Scalars['String']>;
 };
 
-export type UserNodeConnection = {
-  __typename?: 'UserNodeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<UserNodeEdge>>;
+
+export type UserNodeClassroomMembershipsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  memberType?: Maybe<Scalars['String']>;
 };
 
-/** A Relay edge containing a `UserNode` and its cursor. */
-export type UserNodeEdge = {
-  __typename?: 'UserNodeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<UserNode>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
+
+export type UserNodeClassroomsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  accessCode?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  members?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  coverPhoto?: Maybe<Scalars['ID']>;
 };
 
 /**
@@ -618,6 +894,104 @@ export type VerifyToken = {
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
+
+export type DoCreateClassRoomMutationVariables = Exact<{
+  input: CreateClassRoomMutationInput;
+}>;
+
+
+export type DoCreateClassRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { createClassroom?: Maybe<(
+    { __typename?: 'CreateClassRoomMutationPayload' }
+    & Pick<CreateClassRoomMutationPayload, 'success'>
+    & { classroom?: Maybe<(
+      { __typename?: 'AllowAuthenticatedClassRoomType' }
+      & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description'>
+    )> }
+  )> }
+);
+
+export type DoJoinClassRoomMutationVariables = Exact<{
+  input: JoinClassRoomMutationInput;
+}>;
+
+
+export type DoJoinClassRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { joinClassroom?: Maybe<(
+    { __typename?: 'JoinClassRoomMutationPayload' }
+    & Pick<JoinClassRoomMutationPayload, 'success' | 'message'>
+    & { classroom?: Maybe<(
+      { __typename?: 'AllowAuthenticatedClassRoomType' }
+      & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description'>
+    )> }
+  )> }
+);
+
+export type DoLeaveClassRoomMutationVariables = Exact<{
+  input: LeaveClassRoomMutationInput;
+}>;
+
+
+export type DoLeaveClassRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { leaveClassroom?: Maybe<(
+    { __typename?: 'LeaveClassRoomMutationPayload' }
+    & Pick<LeaveClassRoomMutationPayload, 'success' | 'message'>
+  )> }
+);
+
+export type DoUploadClassRoomCoverPhotoMutationVariables = Exact<{
+  input: UploadClassRoomCoverPhotoInput;
+}>;
+
+
+export type DoUploadClassRoomCoverPhotoMutation = (
+  { __typename?: 'Mutation' }
+  & { uploadClassroomCoverPhoto?: Maybe<(
+    { __typename?: 'UploadClassRoomCoverPhotoPayload' }
+    & Pick<UploadClassRoomCoverPhotoPayload, 'success' | 'message'>
+    & { classroom?: Maybe<(
+      { __typename?: 'AllowAuthenticatedClassRoomType' }
+      & Pick<AllowAuthenticatedClassRoomType, 'name'>
+      & { coverPhoto?: Maybe<(
+        { __typename?: 'PrivateMediaType' }
+        & Pick<PrivateMediaType, 'path' | 'originalFileName'>
+      )> }
+    )> }
+  )> }
+);
+
+export type DoPasswordChangeMutationVariables = Exact<{
+  oldPassword: Scalars['String'];
+  newPassword1: Scalars['String'];
+  newPassword2: Scalars['String'];
+}>;
+
+
+export type DoPasswordChangeMutation = (
+  { __typename?: 'Mutation' }
+  & { passwordChange?: Maybe<(
+    { __typename?: 'PasswordChange' }
+    & Pick<PasswordChange, 'success' | 'errors' | 'refreshToken' | 'token'>
+  )> }
+);
+
+export type DoUpdateAccountMutationVariables = Exact<{
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  requiresPasswordReset?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type DoUpdateAccountMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAccount?: Maybe<(
+    { __typename?: 'UpdateAccount' }
+    & Pick<UpdateAccount, 'success' | 'errors'>
+  )> }
+);
 
 export type DoLoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -668,18 +1042,95 @@ export type DoVerifyAccountMutation = (
   )> }
 );
 
-export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+export type DoVerifyTokenMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
 
 
-export type GetAllUsersQuery = (
+export type DoVerifyTokenMutation = (
+  { __typename?: 'Mutation' }
+  & { verifyToken?: Maybe<(
+    { __typename?: 'VerifyToken' }
+    & Pick<VerifyToken, 'payload' | 'success' | 'errors'>
+  )> }
+);
+
+export type DoRefreshTokenMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type DoRefreshTokenMutation = (
+  { __typename?: 'Mutation' }
+  & { refreshToken?: Maybe<(
+    { __typename?: 'RefreshToken' }
+    & Pick<RefreshToken, 'token' | 'payload' | 'success' | 'errors' | 'refreshToken'>
+  )> }
+);
+
+export type DoUpdateIconMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type DoUpdateIconMutation = (
+  { __typename?: 'Mutation' }
+  & { updateIcon?: Maybe<(
+    { __typename?: 'UpdateIconMutation' }
+    & Pick<UpdateIconMutation, 'success'>
+    & { icon?: Maybe<(
+      { __typename?: 'PrivateMediaType' }
+      & Pick<PrivateMediaType, 'originalFileName' | 'path'>
+    )> }
+  )> }
+);
+
+export type GetClassRoomQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetClassRoomQuery = (
   { __typename?: 'Query' }
-  & { users?: Maybe<(
-    { __typename?: 'UserNodeConnection' }
-    & { edges: Array<Maybe<(
-      { __typename?: 'UserNodeEdge' }
+  & { classroom?: Maybe<(
+    { __typename?: 'AllowAuthenticatedClassRoomType' }
+    & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
+    & { coverPhoto?: Maybe<(
+      { __typename?: 'PrivateMediaType' }
+      & Pick<PrivateMediaType, 'path' | 'originalFileName'>
+    )>, myMembership?: Maybe<(
+      { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
+      & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+    )> }
+  )> }
+);
+
+export type GetUserClassRoomsQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+  first: Scalars['Int'];
+}>;
+
+
+export type GetUserClassRoomsQuery = (
+  { __typename?: 'Query' }
+  & { myClassrooms?: Maybe<(
+    { __typename?: 'AllowAuthenticatedClassRoomTypeConnection' }
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'startCursor' | 'endCursor'>
+    ), edges: Array<Maybe<(
+      { __typename?: 'AllowAuthenticatedClassRoomTypeEdge' }
+      & Pick<AllowAuthenticatedClassRoomTypeEdge, 'cursor'>
       & { node?: Maybe<(
-        { __typename?: 'UserNode' }
-        & Pick<UserNode, 'username' | 'archived' | 'verified' | 'email' | 'secondaryEmail'>
+        { __typename?: 'AllowAuthenticatedClassRoomType' }
+        & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
+        & { coverPhoto?: Maybe<(
+          { __typename?: 'PrivateMediaType' }
+          & Pick<PrivateMediaType, 'path' | 'originalFileName'>
+        )>, myMembership?: Maybe<(
+          { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
+          & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+        )> }
       )> }
     )>> }
   )> }
@@ -691,12 +1142,82 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
-    { __typename?: 'UserNode' }
-    & Pick<UserNode, 'username' | 'archived' | 'verified' | 'email' | 'secondaryEmail'>
+    { __typename?: 'AllowSelfALUserType' }
+    & Pick<AllowSelfAlUserType, 'lastLogin' | 'username' | 'firstName' | 'lastName' | 'email' | 'isActive' | 'requiresPasswordReset' | 'isAdmin' | 'verified' | 'secondaryEmail'>
+    & { icon?: Maybe<(
+      { __typename?: 'PrivateMediaType' }
+      & Pick<PrivateMediaType, 'originalFileName' | 'path'>
+    )> }
   )> }
 );
 
 
+export const DoCreateClassRoom = gql`
+    mutation DoCreateClassRoom($input: CreateClassRoomMutationInput!) {
+  createClassroom(input: $input) {
+    success
+    classroom {
+      id
+      name
+      description
+    }
+  }
+}
+    `;
+export const DoJoinClassRoom = gql`
+    mutation DoJoinClassRoom($input: JoinClassRoomMutationInput!) {
+  joinClassroom(input: $input) {
+    success
+    message
+    classroom {
+      id
+      name
+      description
+    }
+  }
+}
+    `;
+export const DoLeaveClassRoom = gql`
+    mutation DoLeaveClassRoom($input: LeaveClassRoomMutationInput!) {
+  leaveClassroom(input: $input) {
+    success
+    message
+  }
+}
+    `;
+export const DoUploadClassRoomCoverPhoto = gql`
+    mutation DoUploadClassRoomCoverPhoto($input: UploadClassRoomCoverPhotoInput!) {
+  uploadClassroomCoverPhoto(input: $input) {
+    success
+    message
+    classroom {
+      name
+      coverPhoto {
+        path
+        originalFileName
+      }
+    }
+  }
+}
+    `;
+export const DoPasswordChange = gql`
+    mutation DoPasswordChange($oldPassword: String!, $newPassword1: String!, $newPassword2: String!) {
+  passwordChange(oldPassword: $oldPassword, newPassword1: $newPassword1, newPassword2: $newPassword2) {
+    success
+    errors
+    refreshToken
+    token
+  }
+}
+    `;
+export const DoUpdateAccount = gql`
+    mutation DoUpdateAccount($firstName: String, $lastName: String, $requiresPasswordReset: Boolean) {
+  updateAccount(firstName: $firstName, lastName: $lastName, requiresPasswordReset: $requiresPasswordReset) {
+    success
+    errors
+  }
+}
+    `;
 export const DoLogin = gql`
     mutation DoLogin($username: String!, $password: String!) {
   tokenAuth(username: $username, password: $password) {
@@ -714,14 +1235,7 @@ export const DoLogin = gql`
     `;
 export const DoRegister = gql`
     mutation DoRegister($firstName: String!, $lastName: String!, $email: String!, $username: String!, $password1: String!, $password2: String!) {
-  register(
-    email: $email
-    username: $username
-    password1: $password1
-    password2: $password2
-    firstName: $firstName
-    lastName: $lastName
-  ) {
+  register(email: $email, username: $username, password1: $password1, password2: $password2, firstName: $firstName, lastName: $lastName) {
     success
     errors
     token
@@ -737,16 +1251,76 @@ export const DoVerifyAccount = gql`
   }
 }
     `;
-export const GetAllUsers = gql`
-    query GetAllUsers {
-  users {
+export const DoVerifyToken = gql`
+    mutation DoVerifyToken($token: String!) {
+  verifyToken(token: $token) {
+    payload
+    success
+    errors
+  }
+}
+    `;
+export const DoRefreshToken = gql`
+    mutation DoRefreshToken($token: String!) {
+  refreshToken(refreshToken: $token) {
+    token
+    payload
+    success
+    errors
+    refreshToken
+  }
+}
+    `;
+export const DoUpdateIcon = gql`
+    mutation DoUpdateIcon($file: Upload!) {
+  updateIcon(file: $file) {
+    success
+    icon {
+      originalFileName
+      path
+    }
+  }
+}
+    `;
+export const GetClassRoom = gql`
+    query GetClassRoom($id: ID!) {
+  classroom(id: $id) {
+    id
+    name
+    description
+    accessCode
+    coverPhoto {
+      path
+      originalFileName
+    }
+    myMembership {
+      memberType
+    }
+  }
+}
+    `;
+export const GetUserClassRooms = gql`
+    query GetUserClassRooms($after: String, $first: Int!) {
+  myClassrooms(after: $after, first: $first) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
     edges {
+      cursor
       node {
-        username
-        archived
-        verified
-        email
-        secondaryEmail
+        id
+        name
+        description
+        accessCode
+        coverPhoto {
+          path
+          originalFileName
+        }
+        myMembership {
+          memberType
+        }
       }
     }
   }
@@ -755,10 +1329,19 @@ export const GetAllUsers = gql`
 export const GetCurrentUser = gql`
     query GetCurrentUser {
   me {
+    lastLogin
     username
-    archived
-    verified
+    firstName
+    lastName
     email
+    isActive
+    icon {
+      originalFileName
+      path
+    }
+    requiresPasswordReset
+    isAdmin
+    verified
     secondaryEmail
   }
 }

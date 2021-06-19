@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
@@ -26,7 +27,8 @@ module.exports = configure(function (ctx) {
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'composition-api',
-      'pinia'
+      'pinia',
+      'vue-cropper'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -51,7 +53,21 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       env: {
-        BACKEND_URL: process.env.BACKEND_URL || 'http://localhost/graphql/'
+        GRAPHQL_BACKEND_URL: (process.env.BACKEND_URL || 'http://localhost') + '/graphql/',
+        REST_BACKEND_URL: process.env.BACKEND_URL || 'http://localhost'
+      },
+      chainWebpack (chain, { isServer, isClient }) {
+        chain.module.rule('vue')
+          .use('vue-loader')
+          .loader('vue-loader')
+          .tap(options => {
+            options.transpileOptions = {
+              transforms: {
+                dangerousTaggedTemplateString: true
+              }
+            }
+            return options
+          })
       },
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
@@ -116,9 +132,9 @@ module.exports = configure(function (ctx) {
       plugins: ['Notify']
     },
 
-    // animations: 'all', // --- includes all animations
+    animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    // animations: [],
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {

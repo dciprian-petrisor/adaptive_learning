@@ -1,6 +1,8 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { useAuthStore } from 'src/pinia-store'
 import { ExpectedErrorType } from 'src/generated'
+import { ApolloError } from '@apollo/client/core'
+import { notifyApolloError } from 'src/utils/errors'
 
 @Component({})
 export default class LoginForm extends Vue {
@@ -8,19 +10,17 @@ export default class LoginForm extends Vue {
   username = '';
   password = '';
   isPwd = true;
+  isLoading = false;
   onSubmit () {
+    this.isLoading = true
     return this.authStore.login({ username: this.username, password: this.password })
       .then(() => {
         this.$q.notify({ message: 'Logged in.', type: 'positive' })
         return this.$router.push({ name: 'dashboard' })
       })
-      .catch((err: ExpectedErrorType) => {
-        for (const key of Object.keys(err)) {
-          const errors = err[key]
-          for (const error of errors) {
-            this.$q.notify({ message: error.message, type: 'negative' })
-          }
-        }
+      .catch((err: ExpectedErrorType | ApolloError) => {
+        notifyApolloError(this.$q, err)
       })
+      .finally(() => { this.isLoading = false })
   }
 }

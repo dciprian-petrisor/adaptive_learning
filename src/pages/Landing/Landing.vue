@@ -15,8 +15,5 @@
   </q-page>
 </template>
 
-<style lang="sass" scoped>
-@import 'src/css/app.sass'
-@import 'src/css/landing.sass'
-</style>
 <script src='./Landing.ts' lang='ts'/>
+<style src='./Landing.sass' lang="sass" scoped/>

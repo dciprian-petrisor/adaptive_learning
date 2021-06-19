@@ -3,7 +3,7 @@ import { RouteConfig } from 'vue-router'
 const routes: RouteConfig[] = [
   {
     path: '/',
-    component: () => import('src/layouts/LandingLayout.vue'),
+    component: () => import('src/layouts/Landing/LandingLayout.vue'),
     children: [
       { name: 'landing', path: '', component: () => import('src/pages/Landing/Landing.vue') }
     ],
@@ -13,7 +13,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/dashboard',
-    component: () => import('src/layouts/MainLayout.vue'),
+    component: () => import('src/layouts/Main/MainLayout.vue'),
     children: [
       { name: 'dashboard', path: '', component: () => import('src/pages/Dashboard/Dashboard.vue') }
     ],
@@ -22,8 +22,30 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: '/classroom',
+    component: () => import('src/layouts/Main/MainLayout.vue'),
+    children: [
+      {
+        name: 'classroom', path: ':id', props: true, component: () => import('src/pages/Classroom/Classroom.vue')
+      }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/profile',
+    component: () => import('src/layouts/Main/MainLayout.vue'),
+    children: [
+      { name: 'profile', path: '', component: () => import('src/pages/Profile/Profile.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/activate',
-    component: () => import('src/layouts/LandingLayout.vue'),
+    component: () => import('src/layouts/Landing/LandingLayout.vue'),
     children: [
       {
         name: 'activate', path: ':token', props: true, component: () => import('src/pages/Activate/Activate.vue')
@@ -32,7 +54,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/register',
-    component: () => import('src/layouts/LandingLayout.vue'),
+    component: () => import('src/layouts/Landing/LandingLayout.vue'),
     children: [
       { name: 'register', path: '', component: () => import('src/pages/Register/Register.vue') }
     ],
@@ -42,7 +64,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/login',
-    component: () => import('src/layouts/LandingLayout.vue'),
+    component: () => import('src/layouts/Landing/LandingLayout.vue'),
     children: [
       { name: 'login', path: '', component: () => import('src/pages/Login/Login.vue') }
     ],

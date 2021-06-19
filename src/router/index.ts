@@ -26,7 +26,7 @@ export default route(function ({ Vue }) {
   Router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
     if (!storeHydrated) {
-      const piniaAuthState = sessionStorage.getItem('piniaState')
+      const piniaAuthState = localStorage.getItem('piniaState')
       // restore state if val is undefined and we have one in local storage
       if (piniaAuthState !== undefined && piniaAuthState != null) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -37,11 +37,11 @@ export default route(function ({ Vue }) {
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
     if (to.matched.some(record => record.meta.requiresAuth) && !authStore.loggedIn) {
-      next({ path: 'login', query: { next: to.fullPath } })
+      next({ name: 'login', query: { next: to.fullPath } })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
     } else if (to.matched.some(record => record.meta.requiresNotAuth) && authStore.loggedIn) {
       // disallow going to pages that require the user not to be authenticated by keeping him on the same page
-      next({ path: from.path })
+      return next({ name: 'dashboard' })
     } else {
       next()
     }

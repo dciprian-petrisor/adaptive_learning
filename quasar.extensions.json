@@ -10,5 +10,7 @@
       "scripts",
       "typescript"
     ]
+  },
+  "@quasar/apollo": {
   }
 }

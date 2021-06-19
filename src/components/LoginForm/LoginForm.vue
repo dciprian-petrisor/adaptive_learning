@@ -32,7 +32,7 @@
           />
         </template>
       </q-input>
-        <q-btn ref="submitBtn" label="Submit" type="submit" color="primary" />
+        <q-btn ref="submitBtn" :loading="isLoading" label="Submit" type="submit" color="primary" />
     </q-form>
 
 </template>

@@ -7,8 +7,5 @@
   </q-page>
 </template>
 
-<style lang="sass" scoped>
-@import 'src/css/app.sass'
-
-</style>
 <script src='./Activate.ts' lang='ts'/>
+<style src="./Activate.sass" lang="sass" scoped/>

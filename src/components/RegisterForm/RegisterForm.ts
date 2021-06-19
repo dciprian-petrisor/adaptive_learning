@@ -1,13 +1,15 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
 import { useAuthStore } from 'src/pinia-store'
 import { ExpectedErrorType } from 'src/generated'
+import { ApolloError } from '@apollo/client/errors'
+import { notifyApolloError } from 'src/utils/errors'
+import PasswordValidationMixin from 'src/mixins/PasswordValidationMixin'
 // RFC 2822
 const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-// min 8, upper, lower, digit and special char
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/
 const usernameRegex = /^(?:[a-zA-Z]+?){3,}[a-zA-Z0-9 .-]*?$/
 @Component({})
-export default class RegisterForm extends Vue {
+export default class RegisterForm extends mixins(PasswordValidationMixin) {
   authStore = useAuthStore();
   firstName = '';
   lastName = '';
@@ -15,7 +17,6 @@ export default class RegisterForm extends Vue {
   email = '';
   password = '';
   confirmPassword = '';
-  passwordFieldClasses = '';
   loading = false;
 
   onSubmit () {
@@ -25,24 +26,10 @@ export default class RegisterForm extends Vue {
         this.$q.notify({ message: 'Success!', type: 'positive' })
         return this.$router.push({ name: 'dashboard' })
       })
-      .catch((err: ExpectedErrorType) => {
-        for (const key of Object.keys(err)) {
-          const errors = err[key]
-          for (const error of errors) {
-            this.$q.notify({ message: error.message, type: 'negative' })
-          }
-        }
+      .catch((err: ExpectedErrorType | ApolloError) => {
+        notifyApolloError(this.$q, err)
       })
       .finally(() => { this.loading = false })
-  }
-
-  passwordRegexRule (value: string) {
-    if (passwordRegex.test(value)) {
-      this.passwordFieldClasses = ''
-      return true
-    }
-    this.passwordFieldClasses = 'q-mb-xl'
-    return 'Minimum 8 characters, one uppercase & lowercase letters, a digit and special character'
   }
 
   emailRegexRule (value: string) {
