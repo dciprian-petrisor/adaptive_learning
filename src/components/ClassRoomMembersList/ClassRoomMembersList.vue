@@ -3,51 +3,60 @@
     <q-card-section>
       <div>
         <span class="text-h5 text-weight-regular q-ml-sm">Teachers</span>
-        <q-btn
-          unelevated
-          dense
-          flat
-          class="on-right float-right q-mr-sm"
-          icon="person_add_alt_1"
-        ></q-btn>
       </div>
     </q-card-section>
     <q-separator class="q-mx-lg" />
     <q-card-section>
       <q-list>
-        <q-item clickable v-ripple v-for="teacher, index in teachers" :key="index" >
-          <div v-if="teacher" style="display: inherit">
-          <q-item-section avatar >
-            <user-avatar :user="teacher.user"/>
-          </q-item-section>
-          <q-item-section>{{teacher.user.firstName}} {{teacher.user.lastName}}</q-item-section>
-          </div>
-        </q-item>
+        <template v-for="(teacher, index) in teachers">
+          <q-item clickable v-ripple v-if="teacher" v-bind:key="index">
+            <q-item-section avatar>
+              <user-avatar :user="teacher.user" />
+            </q-item-section>
+            <q-item-section
+              >{{ teacher.user.firstName }} {{ teacher.user.lastName }}</q-item-section
+            >
+          </q-item>
+        </template>
       </q-list>
     </q-card-section>
     <q-card-section>
       <div>
         <span class="text-h5 text-weight-regular q-ml-sm">Students</span>
-        <q-btn
-          unelevated
-          dense
-          flat
-          class="on-right float-right q-mr-sm"
-          icon="person_add_alt_1"
-        ></q-btn>
       </div>
     </q-card-section>
     <q-separator class="q-mx-lg" />
     <q-card-section>
       <q-list>
-        <q-item clickable v-ripple v-for="student, index in students" :key="index" >
-          <div v-if="student" style="display: inherit">
-          <q-item-section avatar >
-            <user-avatar :user="student.user"/>
-          </q-item-section>
-          <q-item-section>{{student.user.firstName}} {{student.user.lastName}}</q-item-section>
-          </div>
-        </q-item>
+        <template v-for="(student, index) in students">
+          <q-item clickable v-ripple :key="index" v-if="student">
+            <q-item-section avatar>
+              <user-avatar :user="student.user" />
+            </q-item-section>
+            <q-item-section
+              >{{ student.user.firstName }} {{ student.user.lastName }}</q-item-section
+            >
+            <q-item-section v-if="isTeacherOrOwner" class="float-right on-right" style="max-width:30px">
+              <q-btn
+                dense
+                flat
+                unelevated
+                icon="settings"
+              >
+              <q-menu auto-close>
+                  <q-list>
+                    <q-item clickable>
+                      <q-item-section>Promote to Teacher</q-item-section>
+                    </q-item>
+                    <q-item clickable @click="removeMember(student.user)">
+                      <q-item-section>Remove</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </q-item-section>
+          </q-item>
+        </template>
       </q-list>
     </q-card-section>
   </q-card>

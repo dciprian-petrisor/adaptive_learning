@@ -18,7 +18,7 @@
         v-model="tab"
         swipeable
         class="col"
-        style="width: 55vw; background-color: transparent; padding: 0; margin: 0"
+        style="width: 75vw; background-color: transparent; padding: 0; margin: 0"
       >
         <q-tab-panel name="feed" class="column col" style="padding: 15px 0 0 0">
           <class-room-feed-card :classroom="classroom"/>
@@ -42,7 +42,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="members" class="column col" style="padding: 15px 0 0 0">
-          <class-room-members-list :classroom="classroom"/>
+          <class-room-members-list :classroom="classroom" @classroomMembersUpdated="classroomMembersUpdated"/>
         </q-tab-panel>
       </q-tab-panels>
     </div>

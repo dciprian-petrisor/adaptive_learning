@@ -1,6 +1,6 @@
 import { defineStore, DefineStoreOptions, GettersTree, Store } from 'pinia'
 import * as GraphQLTypes from 'src/generated/graphql'
-import { leaveClassRoom, createClassRoom, joinClassRoom, uploadClassRoomCoverPhoto } from 'src/operations/mutations/classroom'
+import { leaveClassRoom, createClassRoom, joinClassRoom, uploadClassRoomCoverPhoto, removeMemberFromClassRoom } from 'src/operations/mutations/classroom'
 const STORE_NAME = 'classroom'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -8,10 +8,11 @@ export interface ClassRoomStateInterface {
 }
 
 export interface ClassRoomActionsInterface {
+  removeMemberFromClassRoom(input: GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables): Promise<GraphQLTypes.RemoveMemberFromClassRoomMutationPayload>
   uploadClassRoomCoverPhoto (input: GraphQLTypes.DoUploadClassRoomCoverPhotoMutationVariables): Promise<GraphQLTypes.UploadClassRoomCoverPhotoPayload>
   leaveClassRoom(input: GraphQLTypes.DoLeaveClassRoomMutationVariables): Promise<GraphQLTypes.LeaveClassRoomMutationPayload>
-  createClassRoom(input: GraphQLTypes.DoCreateClassRoomMutationVariables): Promise<GraphQLTypes.AllowAuthenticatedClassRoomType>
-  joinClassRoom(input: GraphQLTypes.DoJoinClassRoomMutationVariables): Promise<GraphQLTypes.AllowAuthenticatedClassRoomType>
+  createClassRoom(input: GraphQLTypes.DoCreateClassRoomMutationVariables): Promise<GraphQLTypes.ClassRoomType>
+  joinClassRoom(input: GraphQLTypes.DoJoinClassRoomMutationVariables): Promise<GraphQLTypes.ClassRoomType>
 }
 
 export type ClassRoomStore = Store<typeof STORE_NAME, ClassRoomStateInterface, GettersTree<ClassRoomStateInterface>, ClassRoomActionsInterface>;
@@ -21,6 +22,19 @@ export const useClassRoomStore = defineStore({
   state: () => ({
   }),
   actions: {
+    removeMemberFromClassRoom (input: GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables) {
+      return removeMemberFromClassRoom(input)
+        .then(response => {
+          if (response.data?.removeMemberFromClassroom) {
+            const result = response.data.removeMemberFromClassroom
+            if (result.success) {
+              return result
+            } else {
+              throw result
+            }
+          }
+        })
+    },
     uploadClassRoomCoverPhoto (input: GraphQLTypes.DoUploadClassRoomCoverPhotoMutationVariables) {
       return uploadClassRoomCoverPhoto(input)
         .then(response => {

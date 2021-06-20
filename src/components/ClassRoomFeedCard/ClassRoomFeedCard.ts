@@ -1,4 +1,4 @@
-import { AllowAuthenticatedClassRoomType, ClassRoomMembershipMemberType } from 'src/generated'
+import { ClassRoomType, ClassRoomMembershipMemberType } from 'src/generated'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { copyToClipboard } from 'quasar'
 import ClassRoomCoverPhotoDialog from '../ClassRoomCoverPhotoDialog/ClassRoomCoverPhotoDialog.vue'
@@ -8,7 +8,7 @@ import { formatMediaURI } from 'src/utils/rest'
   components: { ClassRoomCoverPhotoDialog }
 })
 export default class ClassRoomFeedCard extends Vue {
-    @Prop({ type: Object, required: true }) readonly classroom!: AllowAuthenticatedClassRoomType;
+    @Prop({ type: Object, required: true }) readonly classroom!: ClassRoomType;
     showClassRoomCoverPhotoDialog = false;
 
     get classRoomCoverPhoto () {

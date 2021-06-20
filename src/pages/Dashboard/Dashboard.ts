@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import ClassRoomCard from 'src/components/ClassRoomCard/ClassRoomCard.vue'
 import { GET_USER_CLASSROOMS } from 'src/operations/queries/classroom'
-import { AllowAuthenticatedClassRoomType, AllowAuthenticatedClassRoomTypeConnection } from 'src/generated'
+import { ClassRoomType, ClassRoomTypeConnection } from 'src/generated'
 import { useAuthStore } from 'src/pinia-store'
 import CreateClassRoomDialog from 'src/components/CreateClassRoomDialog/CreateClassRoomDialog.vue'
 import { QInfiniteScroll } from 'quasar'
@@ -16,7 +16,7 @@ import LeaveClassRoomDialog from 'src/components/LeaveClassRoomDialog/LeaveClass
         first: 6,
         after: ''
       },
-      update: function (data : {myClassrooms: AllowAuthenticatedClassRoomTypeConnection}) {
+      update: function (data : {myClassrooms: ClassRoomTypeConnection}) {
         const _this = this as unknown as PageDashboard
         if (data.myClassrooms.pageInfo.endCursor) {
           // save cursor after initial retrieve
@@ -36,11 +36,11 @@ export default class PageDashboard extends Vue {
   first = 3;
   after = '';
   hasNextPage = false;
-  myClassrooms!: AllowAuthenticatedClassRoomTypeConnection;
+  myClassrooms!: ClassRoomTypeConnection;
   showCreateClassroomDialog = false;
   showJoinClassroomDialog = false;
   showLeaveClassRoomDialog = false;
-  classroomToLeave: AllowAuthenticatedClassRoomType | unknown = {};
+  classroomToLeave: ClassRoomType | unknown = {};
 
   get classroomNodes () {
     if (!this.myClassrooms || !this.myClassrooms.edges) { return [] }
@@ -66,15 +66,15 @@ export default class PageDashboard extends Vue {
     return this.$apollo.queries.myClassrooms.refetch()
   }
 
-  onClassroomJoinedOrCreated (id: string) {
-    return this.navigateToClassroom(id)
+  onClassroomJoinedOrCreated (c: ClassRoomType) {
+    return this.navigateToClassroom(c)
   }
 
-  navigateToClassroom (id: string) {
-    return this.$router.push({ name: 'classroom', params: { id } })
+  navigateToClassroom (c: ClassRoomType) {
+    return this.$router.push({ name: 'classroom', params: { id: c.id } })
   }
 
-  leaveClassroom (c: AllowAuthenticatedClassRoomType) {
+  leaveClassroom (c: ClassRoomType) {
     this.classroomToLeave = c
     this.showLeaveClassRoomDialog = true
   }
@@ -90,8 +90,8 @@ export default class PageDashboard extends Vue {
         first: 3,
         after: this.after
       },
-      updateQuery: (previousResult: {myClassrooms: AllowAuthenticatedClassRoomTypeConnection},
-        { fetchMoreResult }: {fetchMoreResult?: { myClassrooms: AllowAuthenticatedClassRoomTypeConnection }}) => {
+      updateQuery: (previousResult: {myClassrooms: ClassRoomTypeConnection},
+        { fetchMoreResult }: {fetchMoreResult?: { myClassrooms: ClassRoomTypeConnection }}) => {
         const newClassrooms = fetchMoreResult?.myClassrooms.edges || []
         const hasNextPage = fetchMoreResult?.myClassrooms.pageInfo.hasNextPage || false
         const pageInfo = fetchMoreResult?.myClassrooms.pageInfo

@@ -1,5 +1,5 @@
 <template>
-<q-card bordered class="q-my-md" style="width: 50vw">
+<q-card bordered class="q-my-md" style="width: 60vw">
               <q-item
                 class="justify-center items-center content-center"
                 clickable

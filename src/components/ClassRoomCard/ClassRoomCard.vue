@@ -7,12 +7,12 @@
         >
 
             <q-img :src="classRoomCoverPhoto" style="height:200px">
-              <div class="absolute-bottom text-subtitle2 text-center">{{ node.name }}</div>
+              <div class="absolute-top text-subtitle2 text-center">{{ node.name }}</div>
             </q-img>
           <q-card-section>
 
             <q-card-actions align="right">
-              <q-btn flat round color="blue" icon="folder_open" @click="()=> $emit('navigateToClassroom', node.id)" />
+              <q-btn flat round color="blue" icon="folder_open" @click="()=> $emit('navigateToClassroom', node)" />
               <q-btn flat round color="red" icon="exit_to_app" @click="() => $emit('leaveClassroom', node)" />
             </q-card-actions>
           </q-card-section>

@@ -2,8 +2,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import AnnouncementCard from 'src/components/AnnouncementCard/AnnouncementCard.vue'
 import ClassRoomFeedCard from 'src/components/ClassRoomFeedCard/ClassRoomFeedCard.vue'
 import { GET_CLASSROOM } from 'src/operations/queries/classroom'
-import { AllowAuthenticatedClassRoomType } from 'src/generated'
+import { ClassRoomMembershipTypeConnection, ClassRoomType } from 'src/generated'
 import ClassRoomMembersList from 'src/components/ClassRoomMembersList/ClassRoomMembersList.vue'
+import deepcopy from 'deepcopy'
 @Component({
   props: {
     id: String
@@ -21,6 +22,12 @@ import ClassRoomMembersList from 'src/components/ClassRoomMembersList/ClassRoomM
 })
 export default class PageClassroom extends Vue {
     @Prop({ type: String, required: true }) readonly id!: string;
-    classroom!: AllowAuthenticatedClassRoomType;
+    classroom: ClassRoomType | unknown = {};
     tab = 'feed';
+
+    classroomMembersUpdated (members: ClassRoomMembershipTypeConnection) {
+      const cloned = deepcopy(this.classroom) as ClassRoomType
+      cloned.classroomMembers = members
+      this.classroom = cloned
+    }
 }

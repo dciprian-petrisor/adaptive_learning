@@ -59,102 +59,6 @@ export type Scalars = {
   Upload: Upload;
 };
 
-export type AllowAuthenticatedAlUserType = Node & {
-  __typename?: 'AllowAuthenticatedALUserType';
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-  username: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  dateJoined: Scalars['DateTime'];
-  icon?: Maybe<PrivateMediaType>;
-};
-
-export type AllowAuthenticatedAlUserTypeConnection = {
-  __typename?: 'AllowAuthenticatedALUserTypeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<AllowAuthenticatedAlUserTypeEdge>>;
-};
-
-/** A Relay edge containing a `AllowAuthenticatedALUserType` and its cursor. */
-export type AllowAuthenticatedAlUserTypeEdge = {
-  __typename?: 'AllowAuthenticatedALUserTypeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<AllowAuthenticatedAlUserType>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export type AllowAuthenticatedClassRoomMembershipType = Node & {
-  __typename?: 'AllowAuthenticatedClassRoomMembershipType';
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  user: AllowAuthenticatedAlUserType;
-  classroom: AllowAuthenticatedClassRoomType;
-  memberType: ClassRoomMembershipMemberType;
-};
-
-export type AllowAuthenticatedClassRoomMembershipTypeConnection = {
-  __typename?: 'AllowAuthenticatedClassRoomMembershipTypeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<AllowAuthenticatedClassRoomMembershipTypeEdge>>;
-};
-
-/** A Relay edge containing a `AllowAuthenticatedClassRoomMembershipType` and its cursor. */
-export type AllowAuthenticatedClassRoomMembershipTypeEdge = {
-  __typename?: 'AllowAuthenticatedClassRoomMembershipTypeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<AllowAuthenticatedClassRoomMembershipType>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export type AllowAuthenticatedClassRoomType = Node & {
-  __typename?: 'AllowAuthenticatedClassRoomType';
-  name: Scalars['String'];
-  description: Scalars['String'];
-  coverPhoto?: Maybe<PrivateMediaType>;
-  classroomMembers: AllowAuthenticatedClassRoomMembershipTypeConnection;
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  accessCode?: Maybe<Scalars['String']>;
-  myMembership?: Maybe<AllowAuthenticatedClassRoomMembershipType>;
-};
-
-
-export type AllowAuthenticatedClassRoomTypeClassroomMembersArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  user?: Maybe<Scalars['ID']>;
-  classroom?: Maybe<Scalars['ID']>;
-  memberType?: Maybe<Scalars['String']>;
-};
-
-export type AllowAuthenticatedClassRoomTypeConnection = {
-  __typename?: 'AllowAuthenticatedClassRoomTypeConnection';
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** Contains the nodes in this connection. */
-  edges: Array<Maybe<AllowAuthenticatedClassRoomTypeEdge>>;
-};
-
-/** A Relay edge containing a `AllowAuthenticatedClassRoomType` and its cursor. */
-export type AllowAuthenticatedClassRoomTypeEdge = {
-  __typename?: 'AllowAuthenticatedClassRoomTypeEdge';
-  /** The item at the end of the edge */
-  node?: Maybe<AllowAuthenticatedClassRoomType>;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
 export type AllowSelfAlUserType = Node & {
   __typename?: 'AllowSelfALUserType';
   /** The ID of the object. */
@@ -173,7 +77,7 @@ export type AllowSelfAlUserType = Node & {
   icon?: Maybe<PrivateMediaType>;
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
-  classroomMemberships: AllowAuthenticatedClassRoomMembershipTypeConnection;
+  classroomMemberships: ClassRoomMembershipTypeConnection;
   /** Designates that this user has all permissions without explicitly assigning them. */
   isSuperuser: Scalars['Boolean'];
   pk?: Maybe<Scalars['Int']>;
@@ -192,6 +96,35 @@ export type AllowSelfAlUserTypeClassroomMembershipsArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+export type AlUserType = Node & {
+  __typename?: 'ALUserType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  dateJoined: Scalars['DateTime'];
+  icon?: Maybe<PrivateMediaType>;
+};
+
+export type AlUserTypeConnection = {
+  __typename?: 'ALUserTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<AlUserTypeEdge>>;
+};
+
+/** A Relay edge containing a `ALUserType` and its cursor. */
+export type AlUserTypeEdge = {
+  __typename?: 'ALUserTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<AlUserType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
 };
 
 /**
@@ -215,6 +148,73 @@ export enum ClassRoomMembershipMemberType {
   Owner = 'OWNER'
 }
 
+export type ClassRoomMembershipType = Node & {
+  __typename?: 'ClassRoomMembershipType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  user: AlUserType;
+  classroom: ClassRoomType;
+  memberType: ClassRoomMembershipMemberType;
+};
+
+export type ClassRoomMembershipTypeConnection = {
+  __typename?: 'ClassRoomMembershipTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ClassRoomMembershipTypeEdge>>;
+};
+
+/** A Relay edge containing a `ClassRoomMembershipType` and its cursor. */
+export type ClassRoomMembershipTypeEdge = {
+  __typename?: 'ClassRoomMembershipTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<ClassRoomMembershipType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type ClassRoomType = Node & {
+  __typename?: 'ClassRoomType';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  coverPhoto?: Maybe<PrivateMediaType>;
+  classroomMembers: ClassRoomMembershipTypeConnection;
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  accessCode?: Maybe<Scalars['String']>;
+  myMembership?: Maybe<ClassRoomMembershipType>;
+};
+
+
+export type ClassRoomTypeClassroomMembersArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  memberType?: Maybe<Scalars['String']>;
+};
+
+export type ClassRoomTypeConnection = {
+  __typename?: 'ClassRoomTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ClassRoomTypeEdge>>;
+};
+
+/** A Relay edge containing a `ClassRoomType` and its cursor. */
+export type ClassRoomTypeEdge = {
+  __typename?: 'ClassRoomTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<ClassRoomType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
 export type CreateClassRoomMutationInput = {
   name: Scalars['String'];
   description: Scalars['String'];
@@ -224,7 +224,7 @@ export type CreateClassRoomMutationInput = {
 export type CreateClassRoomMutationPayload = {
   __typename?: 'CreateClassRoomMutationPayload';
   success?: Maybe<Scalars['Boolean']>;
-  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  classroom?: Maybe<ClassRoomType>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
@@ -253,7 +253,7 @@ export type JoinClassRoomMutationInput = {
 export type JoinClassRoomMutationPayload = {
   __typename?: 'JoinClassRoomMutationPayload';
   success?: Maybe<Scalars['Boolean']>;
-  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  classroom?: Maybe<ClassRoomType>;
   message?: Maybe<Scalars['String']>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -415,6 +415,7 @@ export type Mutation = {
   joinClassroom?: Maybe<JoinClassRoomMutationPayload>;
   leaveClassroom?: Maybe<LeaveClassRoomMutationPayload>;
   uploadClassroomCoverPhoto?: Maybe<UploadClassRoomCoverPhotoPayload>;
+  removeMemberFromClassroom?: Maybe<RemoveMemberFromClassRoomMutationPayload>;
 };
 
 
@@ -536,6 +537,11 @@ export type MutationUploadClassroomCoverPhotoArgs = {
   input: UploadClassRoomCoverPhotoInput;
 };
 
+
+export type MutationRemoveMemberFromClassroomArgs = {
+  input: RemoveMemberFromClassRoomMutationInput;
+};
+
 /** An object with an ID */
 export type Node = {
   /** The ID of the object. */
@@ -612,19 +618,19 @@ export type PrivateMediaType = {
   __typename?: 'PrivateMediaType';
   originalFileName?: Maybe<Scalars['String']>;
   path: Scalars['String'];
-  aluser?: Maybe<AllowAuthenticatedAlUserType>;
-  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  aluser?: Maybe<AlUserType>;
+  classroom?: Maybe<ClassRoomType>;
 };
 
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<AllowSelfAlUserType>;
-  users?: Maybe<AllowAuthenticatedAlUserTypeConnection>;
+  users?: Maybe<AlUserTypeConnection>;
   /** The ID of the object */
-  user?: Maybe<AllowAuthenticatedAlUserType>;
-  myClassrooms?: Maybe<AllowAuthenticatedClassRoomTypeConnection>;
+  user?: Maybe<AlUserType>;
+  myClassrooms?: Maybe<ClassRoomTypeConnection>;
   /** The ID of the object */
-  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  classroom?: Maybe<ClassRoomType>;
 };
 
 
@@ -701,6 +707,32 @@ export type Register = {
   errors?: Maybe<Scalars['ExpectedErrorType']>;
   refreshToken?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
+};
+
+export type RemoveMemberFromClassRoomMutationInput = {
+  id: Scalars['String'];
+  userId: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type RemoveMemberFromClassRoomMutationPayload = {
+  __typename?: 'RemoveMemberFromClassRoomMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  classroomMembers?: Maybe<ClassRoomMembershipTypeConnection>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+
+export type RemoveMemberFromClassRoomMutationPayloadClassroomMembersArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  user?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  memberType?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -798,7 +830,7 @@ export type UploadClassRoomCoverPhotoInput = {
 export type UploadClassRoomCoverPhotoPayload = {
   __typename?: 'UploadClassRoomCoverPhotoPayload';
   success?: Maybe<Scalars['Boolean']>;
-  classroom?: Maybe<AllowAuthenticatedClassRoomType>;
+  classroom?: Maybe<ClassRoomType>;
   message?: Maybe<Scalars['String']>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -821,8 +853,8 @@ export type UserNode = Node & {
   icon?: Maybe<PrivateMediaType>;
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
-  classroomMemberships: AllowAuthenticatedClassRoomMembershipTypeConnection;
-  classrooms: AllowAuthenticatedClassRoomTypeConnection;
+  classroomMemberships: ClassRoomMembershipTypeConnection;
+  classrooms: ClassRoomTypeConnection;
   pk?: Maybe<Scalars['Int']>;
   archived?: Maybe<Scalars['Boolean']>;
   verified?: Maybe<Scalars['Boolean']>;
@@ -907,8 +939,8 @@ export type DoCreateClassRoomMutation = (
     { __typename?: 'CreateClassRoomMutationPayload' }
     & Pick<CreateClassRoomMutationPayload, 'success'>
     & { classroom?: Maybe<(
-      { __typename?: 'AllowAuthenticatedClassRoomType' }
-      & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description'>
+      { __typename?: 'ClassRoomType' }
+      & Pick<ClassRoomType, 'id' | 'name' | 'description'>
     )> }
   )> }
 );
@@ -924,8 +956,8 @@ export type DoJoinClassRoomMutation = (
     { __typename?: 'JoinClassRoomMutationPayload' }
     & Pick<JoinClassRoomMutationPayload, 'success' | 'message'>
     & { classroom?: Maybe<(
-      { __typename?: 'AllowAuthenticatedClassRoomType' }
-      & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description'>
+      { __typename?: 'ClassRoomType' }
+      & Pick<ClassRoomType, 'id' | 'name' | 'description'>
     )> }
   )> }
 );
@@ -954,12 +986,43 @@ export type DoUploadClassRoomCoverPhotoMutation = (
     { __typename?: 'UploadClassRoomCoverPhotoPayload' }
     & Pick<UploadClassRoomCoverPhotoPayload, 'success' | 'message'>
     & { classroom?: Maybe<(
-      { __typename?: 'AllowAuthenticatedClassRoomType' }
-      & Pick<AllowAuthenticatedClassRoomType, 'name'>
+      { __typename?: 'ClassRoomType' }
+      & Pick<ClassRoomType, 'name'>
       & { coverPhoto?: Maybe<(
         { __typename?: 'PrivateMediaType' }
         & Pick<PrivateMediaType, 'path' | 'originalFileName'>
       )> }
+    )> }
+  )> }
+);
+
+export type DoRemoveMemberFromClassRoomMutationVariables = Exact<{
+  input: RemoveMemberFromClassRoomMutationInput;
+}>;
+
+
+export type DoRemoveMemberFromClassRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { removeMemberFromClassroom?: Maybe<(
+    { __typename?: 'RemoveMemberFromClassRoomMutationPayload' }
+    & Pick<RemoveMemberFromClassRoomMutationPayload, 'success' | 'message'>
+    & { classroomMembers?: Maybe<(
+      { __typename?: 'ClassRoomMembershipTypeConnection' }
+      & { edges: Array<Maybe<(
+        { __typename?: 'ClassRoomMembershipTypeEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'ClassRoomMembershipType' }
+          & Pick<ClassRoomMembershipType, 'memberType'>
+          & { user: (
+            { __typename?: 'ALUserType' }
+            & Pick<AlUserType, 'firstName' | 'lastName'>
+            & { icon?: Maybe<(
+              { __typename?: 'PrivateMediaType' }
+              & Pick<PrivateMediaType, 'path'>
+            )> }
+          ) }
+        )> }
+      )>> }
     )> }
   )> }
 );
@@ -1094,24 +1157,24 @@ export type GetClassRoomQueryVariables = Exact<{
 export type GetClassRoomQuery = (
   { __typename?: 'Query' }
   & { classroom?: Maybe<(
-    { __typename?: 'AllowAuthenticatedClassRoomType' }
-    & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
+    { __typename?: 'ClassRoomType' }
+    & Pick<ClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
     & { coverPhoto?: Maybe<(
       { __typename?: 'PrivateMediaType' }
       & Pick<PrivateMediaType, 'path' | 'originalFileName'>
     )>, myMembership?: Maybe<(
-      { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
-      & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+      { __typename?: 'ClassRoomMembershipType' }
+      & Pick<ClassRoomMembershipType, 'memberType'>
     )>, classroomMembers: (
-      { __typename?: 'AllowAuthenticatedClassRoomMembershipTypeConnection' }
+      { __typename?: 'ClassRoomMembershipTypeConnection' }
       & { edges: Array<Maybe<(
-        { __typename?: 'AllowAuthenticatedClassRoomMembershipTypeEdge' }
+        { __typename?: 'ClassRoomMembershipTypeEdge' }
         & { node?: Maybe<(
-          { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
-          & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+          { __typename?: 'ClassRoomMembershipType' }
+          & Pick<ClassRoomMembershipType, 'memberType'>
           & { user: (
-            { __typename?: 'AllowAuthenticatedALUserType' }
-            & Pick<AllowAuthenticatedAlUserType, 'firstName' | 'lastName'>
+            { __typename?: 'ALUserType' }
+            & Pick<AlUserType, 'firstName' | 'lastName'>
             & { icon?: Maybe<(
               { __typename?: 'PrivateMediaType' }
               & Pick<PrivateMediaType, 'path'>
@@ -1132,22 +1195,22 @@ export type GetUserClassRoomsQueryVariables = Exact<{
 export type GetUserClassRoomsQuery = (
   { __typename?: 'Query' }
   & { myClassrooms?: Maybe<(
-    { __typename?: 'AllowAuthenticatedClassRoomTypeConnection' }
+    { __typename?: 'ClassRoomTypeConnection' }
     & { pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'startCursor' | 'endCursor'>
     ), edges: Array<Maybe<(
-      { __typename?: 'AllowAuthenticatedClassRoomTypeEdge' }
-      & Pick<AllowAuthenticatedClassRoomTypeEdge, 'cursor'>
+      { __typename?: 'ClassRoomTypeEdge' }
+      & Pick<ClassRoomTypeEdge, 'cursor'>
       & { node?: Maybe<(
-        { __typename?: 'AllowAuthenticatedClassRoomType' }
-        & Pick<AllowAuthenticatedClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
+        { __typename?: 'ClassRoomType' }
+        & Pick<ClassRoomType, 'id' | 'name' | 'description' | 'accessCode'>
         & { coverPhoto?: Maybe<(
           { __typename?: 'PrivateMediaType' }
           & Pick<PrivateMediaType, 'path' | 'originalFileName'>
         )>, myMembership?: Maybe<(
-          { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
-          & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+          { __typename?: 'ClassRoomMembershipType' }
+          & Pick<ClassRoomMembershipType, 'memberType'>
         )> }
       )> }
     )>> }
@@ -1213,6 +1276,28 @@ export const DoUploadClassRoomCoverPhoto = gql`
       coverPhoto {
         path
         originalFileName
+      }
+    }
+  }
+}
+    `;
+export const DoRemoveMemberFromClassRoom = gql`
+    mutation DoRemoveMemberFromClassRoom($input: RemoveMemberFromClassRoomMutationInput!) {
+  removeMemberFromClassroom(input: $input) {
+    success
+    message
+    classroomMembers {
+      edges {
+        node {
+          user {
+            firstName
+            lastName
+            icon {
+              path
+            }
+          }
+          memberType
+        }
       }
     }
   }

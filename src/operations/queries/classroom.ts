@@ -20,6 +20,7 @@ query GetClassRoom($id: ID!) {
       edges {
         node {
           user {
+            id
             firstName
             lastName
             icon {

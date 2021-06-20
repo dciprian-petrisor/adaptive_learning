@@ -6,7 +6,7 @@ import GraphQLUploader from 'src/components/GraphQLUploader/GraphQLUploader.vue'
 // false positive... vscode finds it fine, eslint doesn't for some reason
 // eslint-disable-next-line import/named
 import { CropperInterface } from 'vue-advanced-cropper'
-import { AllowAuthenticatedClassRoomType } from 'src/generated'
+import { ClassRoomType } from 'src/generated'
 
 const isCropper = function (obj: unknown): obj is CropperInterface {
   return (obj as CropperInterface).getResult !== undefined
@@ -16,7 +16,7 @@ const isCropper = function (obj: unknown): obj is CropperInterface {
   components: { 'graphql-uploader': GraphQLUploader }
 })
 export default class ClassRoomCoverPhotoDialog extends Vue {
-    @Prop({ type: Object, default: false, required: true }) readonly classroom!: AllowAuthenticatedClassRoomType;
+    @Prop({ type: Object, default: false, required: true }) readonly classroom!: ClassRoomType;
     @Prop({ type: Boolean, default: false, required: true }) readonly show!: boolean;
     filesList: File[] = []
     loadedPictureBase64 = ''

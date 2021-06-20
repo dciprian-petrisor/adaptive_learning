@@ -53,6 +53,36 @@ mutation DoUploadClassRoomCoverPhoto($input: UploadClassRoomCoverPhotoInput!) {
 }
  `
 
+export const DO_REMOVE_MEMBER_FROM_CLASSROOM = gql`
+mutation DoRemoveMemberFromClassRoom($input: RemoveMemberFromClassRoomMutationInput!) {
+  removeMemberFromClassroom(input: $input) {
+    success,
+    message,
+    classroomMembers {
+      edges {
+        node {
+          user {
+            firstName
+            lastName
+            icon {
+              path
+            }
+          }
+          memberType
+        }
+      }
+    }
+  }
+}
+`
+
+export const removeMemberFromClassRoom = function (input: GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables) {
+  return apolloClient.mutate<GraphQLTypes.DoRemoveMemberFromClassRoomMutation, GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables>({
+    mutation: DO_REMOVE_MEMBER_FROM_CLASSROOM,
+    variables: input
+  })
+}
+
 export const uploadClassRoomCoverPhoto = function (input: GraphQLTypes.DoUploadClassRoomCoverPhotoMutationVariables) {
   return apolloClient.mutate<GraphQLTypes.DoUploadClassRoomCoverPhotoMutation, GraphQLTypes.DoUploadClassRoomCoverPhotoMutationVariables>({
     mutation: DO_UPLOAD_CLASSROOM_COVER_PHOTO,

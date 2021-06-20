@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client/errors'
-import { AllowAuthenticatedClassRoomType } from 'src/generated'
+import { ClassRoomType } from 'src/generated'
 import { ExpectedErrorType } from 'src/generated/extra'
 import { useClassRoomStore } from 'src/pinia-store'
 import { notifyApolloError } from 'src/utils/errors'
@@ -7,7 +7,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({})
 export default class LeaveClassRoomDialog extends Vue {
-    @Prop({ type: Object, required: true }) readonly classroom?: AllowAuthenticatedClassRoomType;
+    @Prop({ type: Object, required: true }) readonly classroom?: ClassRoomType;
     @Prop({ type: Boolean, required: true }) readonly show!: boolean;
 
     get shouldShow () {
