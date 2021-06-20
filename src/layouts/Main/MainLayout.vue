@@ -19,7 +19,7 @@
         </q-toolbar-title>
 
         <q-btn flat round dense>
-          <user-avatar size="xl" />
+          <user-avatar size="xl" :user="user" />
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup :to="{ name: 'profile' }">

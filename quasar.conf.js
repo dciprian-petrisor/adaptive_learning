@@ -56,19 +56,19 @@ module.exports = configure(function (ctx) {
         GRAPHQL_BACKEND_URL: (process.env.BACKEND_URL || 'http://localhost') + '/graphql/',
         REST_BACKEND_URL: process.env.BACKEND_URL || 'http://localhost'
       },
-      chainWebpack (chain, { isServer, isClient }) {
-        chain.module.rule('vue')
-          .use('vue-loader')
-          .loader('vue-loader')
-          .tap(options => {
-            options.transpileOptions = {
-              transforms: {
-                dangerousTaggedTemplateString: true
-              }
-            }
-            return options
-          })
-      },
+      // chainWebpack (chain, { isServer, isClient }) {
+      //   chain.module.rule('vue')
+      //     .use('vue-loader')
+      //     .loader('vue-loader')
+      //     .tap(options => {
+      //       options.transpileOptions = {
+      //         transforms: {
+      //           dangerousTaggedTemplateString: true
+      //         }
+      //       }
+      //       return options
+      //     })
+      // },
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // transpile: false,

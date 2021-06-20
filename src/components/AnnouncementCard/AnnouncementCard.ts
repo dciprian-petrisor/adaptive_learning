@@ -1,7 +1,8 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { QEditor } from 'quasar'
 import UserAvatar from 'src/components/UserAvatar/UserAvatar.vue'
-
+import { useAuthStore } from 'src/pinia-store'
+const store = useAuthStore()
 @Component({
   components: { UserAvatar }
 })
@@ -12,6 +13,10 @@ export default class AnnouncementCard extends Vue {
 
     announcementOpened_= false
     announcement = ''
+
+    get user () {
+      return store.user
+    }
 
     get announcementOpened () {
       return this.announcementOpened_

@@ -8,7 +8,7 @@
                 v-if="!announcementOpened"
               >
                 <q-item-section avatar>
-                  <user-avatar> </user-avatar>
+                  <user-avatar :user="user"> </user-avatar>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption header> Make an announcement</q-item-label>

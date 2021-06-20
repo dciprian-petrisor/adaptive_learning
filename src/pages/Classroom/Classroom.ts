@@ -3,12 +3,12 @@ import AnnouncementCard from 'src/components/AnnouncementCard/AnnouncementCard.v
 import ClassRoomFeedCard from 'src/components/ClassRoomFeedCard/ClassRoomFeedCard.vue'
 import { GET_CLASSROOM } from 'src/operations/queries/classroom'
 import { AllowAuthenticatedClassRoomType } from 'src/generated'
-
+import ClassRoomMembersList from 'src/components/ClassRoomMembersList/ClassRoomMembersList.vue'
 @Component({
   props: {
     id: String
   },
-  components: { AnnouncementCard, ClassRoomFeedCard },
+  components: { AnnouncementCard, ClassRoomFeedCard, 'class-room-members-list': ClassRoomMembersList },
   apollo: {
     classroom: {
       query: GET_CLASSROOM,

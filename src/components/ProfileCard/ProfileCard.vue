@@ -6,7 +6,7 @@
     <q-card-section>
       <div class="text-subtitle2 q-mb-sm">Profile Picture</div>
       <q-btn dense flat class="q-px-sm q-ml-sm" @click="showProfilePictureDialog = true">
-        <user-avatar class="q-mr-md" size="xl" />
+        <user-avatar class="q-mr-md" size="xl" :user="user"/>
         <div>Change</div>
       </q-btn>
     </q-card-section>

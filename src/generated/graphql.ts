@@ -68,6 +68,7 @@ export type AllowAuthenticatedAlUserType = Node & {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   dateJoined: Scalars['DateTime'];
+  icon?: Maybe<PrivateMediaType>;
 };
 
 export type AllowAuthenticatedAlUserTypeConnection = {
@@ -1101,7 +1102,24 @@ export type GetClassRoomQuery = (
     )>, myMembership?: Maybe<(
       { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
       & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
-    )> }
+    )>, classroomMembers: (
+      { __typename?: 'AllowAuthenticatedClassRoomMembershipTypeConnection' }
+      & { edges: Array<Maybe<(
+        { __typename?: 'AllowAuthenticatedClassRoomMembershipTypeEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'AllowAuthenticatedClassRoomMembershipType' }
+          & Pick<AllowAuthenticatedClassRoomMembershipType, 'memberType'>
+          & { user: (
+            { __typename?: 'AllowAuthenticatedALUserType' }
+            & Pick<AllowAuthenticatedAlUserType, 'firstName' | 'lastName'>
+            & { icon?: Maybe<(
+              { __typename?: 'PrivateMediaType' }
+              & Pick<PrivateMediaType, 'path'>
+            )> }
+          ) }
+        )> }
+      )>> }
+    ) }
   )> }
 );
 
@@ -1295,6 +1313,20 @@ export const GetClassRoom = gql`
     }
     myMembership {
       memberType
+    }
+    classroomMembers {
+      edges {
+        node {
+          user {
+            firstName
+            lastName
+            icon {
+              path
+            }
+          }
+          memberType
+        }
+      }
     }
   }
 }

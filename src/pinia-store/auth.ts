@@ -2,7 +2,6 @@ import { defineStore, DefineStoreOptions, GettersTree, Store } from 'pinia'
 import * as GraphQLTypes from 'src/generated/graphql'
 import { refreshToken, login, register, verifyAccount, updateIcon, updateAccountDetails, changePassword } from 'src/operations/mutations/users'
 import { getCurrentUser } from 'src/operations/queries/users'
-import { formatMediaURI } from 'src/utils/rest'
 import VueRouter, { Route } from 'vue-router'
 import deepcopy from 'deepcopy'
 const STORE_NAME = 'auth'
@@ -115,10 +114,6 @@ export const useAuthStore = defineStore({
             const result = response.data.updateIcon
             if (result.success && result.icon && this.user) {
               this.user.icon = deepcopy(result.icon)
-              // set the backend URL + media path returned from GraphQL
-              if (this.user.icon?.path) {
-                this.user.icon.path = formatMediaURI(this.user.icon.path)
-              }
               return true
             }
           }
@@ -191,10 +186,6 @@ export const useAuthStore = defineStore({
       const response = await getCurrentUser()
       if (response.data?.me && isUserNode(response.data.me)) {
         this.user = deepcopy(response.data.me)
-        // set the backend URL + media path returned from GraphQL
-        if (this.user.icon?.path) {
-          this.user.icon.path = formatMediaURI(this.user.icon.path)
-        }
       }
     }
   }

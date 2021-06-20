@@ -1,30 +1,33 @@
-import { Component } from 'vue-property-decorator'
-import { useAuthStore } from 'src/pinia-store'
+import { Component, Prop } from 'vue-property-decorator'
 import { QAvatar } from 'quasar'
+import { AllowAuthenticatedAlUserType } from 'src/generated'
+import { formatMediaURI } from 'src/utils/rest'
 @Component({})
 export default class UserAvatar extends QAvatar {
-    authStore = useAuthStore()
+    @Prop({ type: Object, required: true }) readonly user!: AllowAuthenticatedAlUserType;
 
     get nameInitials () {
-      const user = this.authStore.user
-      if (!user) {
+      if (!this.user) {
         return ''
       }
 
-      if (!user.firstName && !user.lastName) {
+      if (!this.user.firstName && !this.user.lastName) {
         return ''
       }
 
-      if (user.firstName) {
-        return user.firstName[0].toUpperCase()
+      if (this.user.firstName) {
+        return this.user.firstName[0].toUpperCase()
       }
 
-      if (user.lastName) {
-        return user.lastName[0].toUpperCase()
+      if (this.user.lastName) {
+        return this.user.lastName[0].toUpperCase()
       }
     }
 
     get avatarUri () {
-      return this.authStore.user?.icon?.path
+      if (this.user?.icon?.path) {
+        return formatMediaURI(this.user?.icon?.path)
+      }
+      return ''
     }
 }

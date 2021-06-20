@@ -1,12 +1,14 @@
 <template>
      <q-card>
-            <q-img :src="classRoomCoverPhoto" style="height:370px">
-              <div class="absolute-top text-h3 text-left" style="margin: 30px; background: none;">{{classroom.name}}</div>
+            <q-img :src="classRoomCoverPhoto" style="height:350px;" img-class="darkened-bg">
+              <div class="absolute-top text-h3 text-left" style="margin: 30px; background: none;">
+                <span >{{classroom.name}}</span>
+                </div>
               <div
                 class="absolute-bottom text-left column"
                 style="margin: 30px 50px 50px 30px; background: none;"
               >
-                <span>Access code</span>
+                <span >Access code</span>
                 <div>
                   <q-btn
                     flat
@@ -22,7 +24,7 @@
                   ></q-btn>
                 </div>
               </div>
-              <q-btn round flat icon="more_vert" class="absolute-top-right q-ma-md" v-if="isClassroomAdmin">
+              <q-btn round flat icon="more_vert" class="absolute-top-right q-ma-md"  v-if="isClassroomAdmin">
                 <q-menu auto-close>
                   <q-list>
                     <q-item clickable @click="showClassRoomCoverPhotoDialog = true">

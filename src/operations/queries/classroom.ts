@@ -5,16 +5,30 @@ import * as GraphQLTypes from 'src/generated/graphql'
 export const GET_CLASSROOM = gql`
 query GetClassRoom($id: ID!) {
   classroom(id: $id) {
-    id,
-    name,
-    description,
-    accessCode,
+    id
+    name
+    description
+    accessCode
     coverPhoto {
-        path,
-        originalFileName
-    },
+      path
+      originalFileName
+    }
     myMembership {
       memberType
+    }
+    classroomMembers {
+      edges {
+        node {
+          user {
+            firstName
+            lastName
+            icon {
+              path
+            }
+          }
+          memberType
+        }
+      }
     }
   }
 }
