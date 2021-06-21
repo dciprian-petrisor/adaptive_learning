@@ -1,14 +1,15 @@
-import { ClassRoomType, ClassRoomMembershipMemberType } from 'src/generated'
+import { ClassRoomType, ClassRoomMembershipMemberType, PrivateMediaType } from 'src/generated'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { copyToClipboard } from 'quasar'
 import ClassRoomCoverPhotoDialog from '../ClassRoomCoverPhotoDialog/ClassRoomCoverPhotoDialog.vue'
 import { formatMediaURI } from 'src/utils/rest'
+import deepcopy from 'deepcopy'
 
 @Component({
   components: { ClassRoomCoverPhotoDialog }
 })
 export default class ClassRoomFeedCard extends Vue {
-    @Prop({ type: Object, required: true }) readonly classroom!: ClassRoomType;
+    @Prop({ type: Object, required: true }) classroom!: ClassRoomType;
     showClassRoomCoverPhotoDialog = false;
 
     get classRoomCoverPhoto () {
@@ -24,6 +25,14 @@ export default class ClassRoomFeedCard extends Vue {
         return false
       } else {
         return membershipType === ClassRoomMembershipMemberType.Owner || ClassRoomMembershipMemberType.Teacher
+      }
+    }
+
+    onCoverPhotoUploadSuccess (newPath: PrivateMediaType) {
+      const clone = deepcopy(this.classroom)
+      if (this.classroom.coverPhoto) {
+        clone.coverPhoto = newPath
+        this.classroom = clone
       }
     }
 

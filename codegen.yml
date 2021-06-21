@@ -10,7 +10,7 @@ generates:
     config:
       strictScalars: true
       scalars:
-        DateTime: "Date"
+        DateTime: "luxon#DateTime"
         ExpectedErrorType: "./extra#ExpectedErrorType"
         Upload: "./extra#Upload"
         GenericScalar: "any"

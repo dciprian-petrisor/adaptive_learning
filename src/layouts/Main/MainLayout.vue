@@ -56,13 +56,31 @@
             <q-item-section> Calendar </q-item-section>
           </q-item>
 
-          <q-separator />
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="settings" />
-            </q-item-section>
-            <q-item-section> Settings </q-item-section>
-          </q-item>
+          <template v-if="classrooms">
+            <q-separator />
+            <q-item>
+              <q-item-label header>Enrolled Classrooms</q-item-label>
+            </q-item>
+            <template v-for="(c, index) in classrooms">
+              <q-item
+                clickable
+                v-ripple
+                :key="index"
+                v-if="c && c.node"
+                @click="() => navigateToClassroom(c)"
+              >
+                <q-item-section avatar>
+                  <q-avatar v-if="c.node.coverPhoto"  >
+                    <q-img :src="formatCoverPhotoPath(c.node.coverPhoto)" :img-style="{borderRadius: '50%'}" style="height:100%"/>
+                  </q-avatar>
+                  <q-avatar v-else color="primary" text-color="white">
+                    {{ c.node.name[0] }}
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section> {{ c.node.name }} </q-item-section>
+              </q-item>
+            </template>
+          </template>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -79,7 +97,12 @@
                 label="Dismiss"
                 @click="passwordResetDismissed = true"
               />
-              <q-btn flat color="white" label="Reset password now" :to="{name: 'profile' }" />
+              <q-btn
+                flat
+                color="white"
+                label="Reset password now"
+                :to="{ name: 'profile' }"
+              />
             </template>
           </q-banner>
           <q-banner class="bg-secondary text-white" v-if="showRequiresVerification">

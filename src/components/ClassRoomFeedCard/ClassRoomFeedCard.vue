@@ -3,6 +3,8 @@
             <q-img :src="classRoomCoverPhoto" style="height:350px;" img-class="darkened-bg">
               <div class="absolute-top text-h3 text-left" style="margin: 30px; background: none;">
                 <span >{{classroom.name}}</span>
+                <br/>
+                <span class="text-subtitle2" >{{classroom.description}}</span>
                 </div>
               <div
                 class="absolute-bottom text-left column"
@@ -37,7 +39,8 @@
             <class-room-cover-photo-dialog
             :classroom="classroom"
             :show="showClassRoomCoverPhotoDialog"
-      @updateShow="(v) => (showClassRoomCoverPhotoDialog = v)"/>
+            @success="onCoverPhotoUploadSuccess"
+            @updateShow="(v) => (showClassRoomCoverPhotoDialog = v)"/>
           </q-card>
 </template>
 

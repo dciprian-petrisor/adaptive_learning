@@ -75,8 +75,9 @@ export default class ClassRoomCoverPhotoDialog extends Vue {
           const cropped = new File([blob as never], this.filesList[0].name, { lastModified: file.lastModified, type: file.type })
           const store = useClassRoomStore()
           store.uploadClassRoomCoverPhoto({ input: { id: this.classroom.id, file: cropped } })
-            .then(() => {
+            .then((r) => {
               this.$q.notify({ message: 'Cover photo updated.', type: 'positive' })
+              this.$emit('success', r.classroom?.coverPhoto)
               this.$emit('updateShow', false)
               this.step = 1
               this.filesList = []

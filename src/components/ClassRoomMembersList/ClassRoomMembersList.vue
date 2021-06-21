@@ -16,6 +16,27 @@
             <q-item-section
               >{{ teacher.user.firstName }} {{ teacher.user.lastName }}</q-item-section
             >
+            <q-item-section
+              v-if="isTeacherOrOwner"
+              class="float-right on-right"
+              style="max-width: 30px"
+            >
+              <q-btn
+                dense
+                flat
+                unelevated
+                icon="settings"
+                v-if="!isCurrentUser(teacher.user)"
+              >
+                <q-menu auto-close>
+                  <q-list>
+                    <q-item clickable @click="updateMembership(teacher.user, 'STUDENT')">
+                      <q-item-section>Demote to Student</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </q-item-section>
           </q-item>
         </template>
       </q-list>
@@ -36,19 +57,18 @@
             <q-item-section
               >{{ student.user.firstName }} {{ student.user.lastName }}</q-item-section
             >
-            <q-item-section v-if="isTeacherOrOwner" class="float-right on-right" style="max-width:30px">
-              <q-btn
-                dense
-                flat
-                unelevated
-                icon="settings"
-              >
-              <q-menu auto-close>
+            <q-item-section
+              v-if="isTeacherOrOwner"
+              class="float-right on-right"
+              style="max-width: 30px"
+            >
+              <q-btn dense flat unelevated icon="settings">
+                <q-menu auto-close>
                   <q-list>
-                    <q-item clickable>
+                    <q-item clickable @click="updateMembership(student.user, 'TEACHER')">
                       <q-item-section>Promote to Teacher</q-item-section>
                     </q-item>
-                    <q-item clickable @click="removeMember(student.user)">
+                    <q-item clickable @click="startRemoveMember(student.user)">
                       <q-item-section>Remove</q-item-section>
                     </q-item>
                   </q-list>
@@ -59,6 +79,24 @@
         </template>
       </q-list>
     </q-card-section>
+    <q-dialog v-model="shouldShowConfirmRemoveDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm">Are you sure you want to remove this member?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Remove"
+            color="primary"
+            v-close-popup
+            @click="endRemoveMember"
+          />
+          <q-btn flat label="Cancel" color="primary" v-close-popup @click="memberForRemoval = null" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-card>
 </template>
 

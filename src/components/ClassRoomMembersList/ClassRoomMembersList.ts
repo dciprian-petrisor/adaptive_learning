@@ -1,11 +1,12 @@
 import { ClassRoomType, ClassRoomMembershipMemberType, AlUserType, ExpectedErrorType } from 'src/generated'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import UserAvatar from 'src/components/UserAvatar/UserAvatar.vue'
-import { useClassRoomStore } from 'src/pinia-store'
+import { useAuthStore, useClassRoomStore } from 'src/pinia-store'
 import { notifyApolloError } from 'src/utils/errors'
 import { ApolloError } from '@apollo/client/errors'
 
-const store = useClassRoomStore()
+const authStore = useAuthStore()
+const classroomStore = useClassRoomStore()
 
 @Component({
   components: { UserAvatar }
@@ -13,6 +14,8 @@ const store = useClassRoomStore()
 export default class ClassRoomMembersList extends Vue {
     @Prop({ type: Object, required: true }) readonly classroom!: ClassRoomType;
 
+    shouldShowConfirmRemoveDialog = false;
+    memberForRemoval?: AlUserType = undefined;
     get isTeacherOrOwner () {
       return this.classroom.myMembership?.memberType === ClassRoomMembershipMemberType.Teacher || this.classroom.myMembership?.memberType === ClassRoomMembershipMemberType.Owner
     }
@@ -35,8 +38,34 @@ export default class ClassRoomMembersList extends Vue {
       return []
     }
 
-    removeMember (student: AlUserType) {
-      store.removeMemberFromClassRoom({ input: { id: this.classroom.id, userId: student.id } })
+    isCurrentUser (user: AlUserType) {
+      return user.username === authStore.user?.username
+    }
+
+    updateMembership (student: AlUserType, type: string) {
+      classroomStore.updateMembershipType({ input: { id: this.classroom.id, userId: student.id, newMembershipType: type as ClassRoomMembershipMemberType } })
+        .then((result) => {
+          if (result) {
+            this.$emit('membershipUpdated', result)
+          }
+        })
+        .catch((err: ApolloError | ExpectedErrorType) => {
+          notifyApolloError(this.$q, err)
+        })
+    }
+
+    startRemoveMember (student: AlUserType) {
+      this.memberForRemoval = student
+      this.shouldShowConfirmRemoveDialog = true
+    }
+
+    endRemoveMember () {
+      if (!this.memberForRemoval) {
+        this.shouldShowConfirmRemoveDialog = false
+        return
+      }
+
+      classroomStore.removeMemberFromClassRoom({ input: { id: this.classroom.id, userId: this.memberForRemoval.id } })
         .then((result) => {
           if (result.classroomMembers) {
             this.$emit('classroomMembersUpdated', result.classroomMembers)
@@ -45,6 +74,6 @@ export default class ClassRoomMembersList extends Vue {
         })
         .catch((err: ApolloError | ExpectedErrorType) => {
           notifyApolloError(this.$q, err)
-        })
+        }).finally(() => { this.shouldShowConfirmRemoveDialog = false })
     }
 }

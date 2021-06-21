@@ -76,6 +76,89 @@ mutation DoRemoveMemberFromClassRoom($input: RemoveMemberFromClassRoomMutationIn
 }
 `
 
+export const DO_UPDATE_MEMBERSHIP_TYPE = gql`
+mutation DoUpdateMembershipType($input: UpdateUserMembershipTypeInput!) {
+  updateUserMembershipType(input: $input) {
+    success
+    message,
+    updatedMembership,
+    updatedMember {
+      username
+    }
+  }
+}
+`
+
+export const DO_CREATE_CLASSROOM_POST = gql`
+mutation DoCreateClassRoomPost($input: CreateClassRoomPostMutationInput!) {
+  createClassroomPost(input: $input) {
+    success,
+    message, 
+    post {
+      node {
+        id,
+        datetime,
+        text,
+        author {
+          id,
+          username,
+          firstName,
+          lastName,
+          icon {
+            path
+          }
+        }
+      }
+    }
+  }
+}
+`
+
+export const DO_CREATE_POST_COMMENT = gql`
+mutation DoCreatePostComment($input: CreateClassRoomPostCommentMutationInput!) {
+  createClassroomPostComment(input: $input) {
+    success
+    comment {
+      cursor
+      node {
+        id
+        author {
+          id
+          username
+          firstName
+          lastName
+          icon {
+            path
+          }
+        }
+        datetime
+        text
+      }
+    }
+  }
+}
+`
+
+export const createPostComment = function (input: GraphQLTypes.DoCreatePostCommentMutationVariables) {
+  return apolloClient.mutate<GraphQLTypes.DoCreatePostCommentMutation, GraphQLTypes.DoCreatePostCommentMutationVariables>({
+    mutation: DO_CREATE_POST_COMMENT,
+    variables: input
+  })
+}
+
+export const createClassRoomPost = function (input: GraphQLTypes.DoCreateClassRoomPostMutationVariables) {
+  return apolloClient.mutate<GraphQLTypes.DoCreateClassRoomPostMutation, GraphQLTypes.DoCreateClassRoomPostMutationVariables>({
+    mutation: DO_CREATE_CLASSROOM_POST,
+    variables: input
+  })
+}
+export const updateMembershipType = function (input: GraphQLTypes.DoUpdateMembershipTypeMutationVariables) {
+  return apolloClient.mutate<GraphQLTypes.DoUpdateMembershipTypeMutation, GraphQLTypes.DoUpdateMembershipTypeMutationVariables>({
+    mutation: DO_UPDATE_MEMBERSHIP_TYPE,
+    variables: input
+  })
+}
+
 export const removeMemberFromClassRoom = function (input: GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables) {
   return apolloClient.mutate<GraphQLTypes.DoRemoveMemberFromClassRoomMutation, GraphQLTypes.DoRemoveMemberFromClassRoomMutationVariables>({
     mutation: DO_REMOVE_MEMBER_FROM_CLASSROOM,

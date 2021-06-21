@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { ExpectedErrorType } from './extra';
 import { Upload } from './extra';
 import gql from 'graphql-tag';
@@ -17,7 +18,7 @@ export type Scalars = {
    * value as specified by
    * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
    */
-  DateTime: Date;
+  DateTime: DateTime;
   /**
    *
    *     Errors messages and codes mapped to
@@ -78,6 +79,8 @@ export type AllowSelfAlUserType = Node & {
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
   classroomMemberships: ClassRoomMembershipTypeConnection;
+  posts: ClassRoomPostTypeConnection;
+  postComments: ClassRoomPostCommentTypeConnection;
   /** Designates that this user has all permissions without explicitly assigning them. */
   isSuperuser: Scalars['Boolean'];
   pk?: Maybe<Scalars['Int']>;
@@ -96,6 +99,28 @@ export type AllowSelfAlUserTypeClassroomMembershipsArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+
+export type AllowSelfAlUserTypePostsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type AllowSelfAlUserTypePostCommentsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  author?: Maybe<Scalars['ID']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  post?: Maybe<Scalars['ID']>;
 };
 
 export type AlUserType = Node & {
@@ -174,6 +199,74 @@ export type ClassRoomMembershipTypeEdge = {
   cursor: Scalars['String'];
 };
 
+export type ClassRoomPostCommentType = Node & {
+  __typename?: 'ClassRoomPostCommentType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  author: AlUserType;
+  datetime: Scalars['DateTime'];
+  text: Scalars['String'];
+  post: ClassRoomPostType;
+};
+
+export type ClassRoomPostCommentTypeConnection = {
+  __typename?: 'ClassRoomPostCommentTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ClassRoomPostCommentTypeEdge>>;
+};
+
+/** A Relay edge containing a `ClassRoomPostCommentType` and its cursor. */
+export type ClassRoomPostCommentTypeEdge = {
+  __typename?: 'ClassRoomPostCommentTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<ClassRoomPostCommentType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type ClassRoomPostType = Node & {
+  __typename?: 'ClassRoomPostType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  datetime: Scalars['DateTime'];
+  author: AlUserType;
+  text: Scalars['String'];
+  classroom: ClassRoomType;
+  postComments: ClassRoomPostCommentTypeConnection;
+};
+
+
+export type ClassRoomPostTypePostCommentsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  author?: Maybe<Scalars['ID']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  post?: Maybe<Scalars['ID']>;
+};
+
+export type ClassRoomPostTypeConnection = {
+  __typename?: 'ClassRoomPostTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ClassRoomPostTypeEdge>>;
+};
+
+/** A Relay edge containing a `ClassRoomPostType` and its cursor. */
+export type ClassRoomPostTypeEdge = {
+  __typename?: 'ClassRoomPostTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<ClassRoomPostType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
 export type ClassRoomType = Node & {
   __typename?: 'ClassRoomType';
   name: Scalars['String'];
@@ -184,6 +277,7 @@ export type ClassRoomType = Node & {
   id: Scalars['ID'];
   accessCode?: Maybe<Scalars['String']>;
   myMembership?: Maybe<ClassRoomMembershipType>;
+  classroomPosts?: Maybe<ClassRoomPostTypeConnection>;
 };
 
 
@@ -196,6 +290,20 @@ export type ClassRoomTypeClassroomMembersArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+
+export type ClassRoomTypeClassroomPostsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  author?: Maybe<Scalars['ID']>;
+  text?: Maybe<Scalars['String']>;
+  classroom?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<Scalars['String']>;
 };
 
 export type ClassRoomTypeConnection = {
@@ -225,6 +333,36 @@ export type CreateClassRoomMutationPayload = {
   __typename?: 'CreateClassRoomMutationPayload';
   success?: Maybe<Scalars['Boolean']>;
   classroom?: Maybe<ClassRoomType>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateClassRoomPostCommentMutationInput = {
+  datetime: Scalars['DateTime'];
+  text: Scalars['String'];
+  postId: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateClassRoomPostCommentMutationPayload = {
+  __typename?: 'CreateClassRoomPostCommentMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  comment?: Maybe<ClassRoomPostCommentTypeEdge>;
+  message?: Maybe<Scalars['String']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateClassRoomPostMutationInput = {
+  datetime: Scalars['DateTime'];
+  text: Scalars['String'];
+  classroomId: Scalars['String'];
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type CreateClassRoomPostMutationPayload = {
+  __typename?: 'CreateClassRoomPostMutationPayload';
+  success?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  post?: Maybe<ClassRoomPostTypeEdge>;
   clientMutationId?: Maybe<Scalars['String']>;
 };
 
@@ -416,6 +554,9 @@ export type Mutation = {
   leaveClassroom?: Maybe<LeaveClassRoomMutationPayload>;
   uploadClassroomCoverPhoto?: Maybe<UploadClassRoomCoverPhotoPayload>;
   removeMemberFromClassroom?: Maybe<RemoveMemberFromClassRoomMutationPayload>;
+  updateUserMembershipType?: Maybe<UpdateUserMembershipTypePayload>;
+  createClassroomPost?: Maybe<CreateClassRoomPostMutationPayload>;
+  createClassroomPostComment?: Maybe<CreateClassRoomPostCommentMutationPayload>;
 };
 
 
@@ -542,6 +683,21 @@ export type MutationRemoveMemberFromClassroomArgs = {
   input: RemoveMemberFromClassRoomMutationInput;
 };
 
+
+export type MutationUpdateUserMembershipTypeArgs = {
+  input: UpdateUserMembershipTypeInput;
+};
+
+
+export type MutationCreateClassroomPostArgs = {
+  input: CreateClassRoomPostMutationInput;
+};
+
+
+export type MutationCreateClassroomPostCommentArgs = {
+  input: CreateClassRoomPostCommentMutationInput;
+};
+
 /** An object with an ID */
 export type Node = {
   /** The ID of the object. */
@@ -631,6 +787,9 @@ export type Query = {
   myClassrooms?: Maybe<ClassRoomTypeConnection>;
   /** The ID of the object */
   classroom?: Maybe<ClassRoomType>;
+  /** The ID of the object */
+  post?: Maybe<ClassRoomPostType>;
+  comments?: Maybe<ClassRoomPostCommentTypeConnection>;
 };
 
 
@@ -669,6 +828,26 @@ export type QueryMyClassroomsArgs = {
 
 export type QueryClassroomArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryPostArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryCommentsArgs = {
+  postId?: Maybe<Scalars['ID']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  author?: Maybe<Scalars['ID']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  post?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<Scalars['String']>;
 };
 
 /** Same as `grapgql_jwt` implementation, with standard output. */
@@ -820,6 +999,22 @@ export type UpdateIconMutationIconArgs = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type UpdateUserMembershipTypeInput = {
+  id: Scalars['String'];
+  userId: Scalars['String'];
+  newMembershipType?: Maybe<ClassRoomMembershipMemberType>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+export type UpdateUserMembershipTypePayload = {
+  __typename?: 'UpdateUserMembershipTypePayload';
+  success?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  updatedMember?: Maybe<AlUserType>;
+  updatedMembership?: Maybe<ClassRoomMembershipMemberType>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
 
 export type UploadClassRoomCoverPhotoInput = {
   file: Scalars['Upload'];
@@ -854,6 +1049,8 @@ export type UserNode = Node & {
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
   classroomMemberships: ClassRoomMembershipTypeConnection;
+  posts: ClassRoomPostTypeConnection;
+  postComments: ClassRoomPostCommentTypeConnection;
   classrooms: ClassRoomTypeConnection;
   pk?: Maybe<Scalars['Int']>;
   archived?: Maybe<Scalars['Boolean']>;
@@ -871,6 +1068,28 @@ export type UserNodeClassroomMembershipsArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+
+export type UserNodePostsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type UserNodePostCommentsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  author?: Maybe<Scalars['ID']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  post?: Maybe<Scalars['ID']>;
 };
 
 
@@ -1027,6 +1246,80 @@ export type DoRemoveMemberFromClassRoomMutation = (
   )> }
 );
 
+export type DoUpdateMembershipTypeMutationVariables = Exact<{
+  input: UpdateUserMembershipTypeInput;
+}>;
+
+
+export type DoUpdateMembershipTypeMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUserMembershipType?: Maybe<(
+    { __typename?: 'UpdateUserMembershipTypePayload' }
+    & Pick<UpdateUserMembershipTypePayload, 'success' | 'message' | 'updatedMembership'>
+    & { updatedMember?: Maybe<(
+      { __typename?: 'ALUserType' }
+      & Pick<AlUserType, 'username'>
+    )> }
+  )> }
+);
+
+export type DoCreateClassRoomPostMutationVariables = Exact<{
+  input: CreateClassRoomPostMutationInput;
+}>;
+
+
+export type DoCreateClassRoomPostMutation = (
+  { __typename?: 'Mutation' }
+  & { createClassroomPost?: Maybe<(
+    { __typename?: 'CreateClassRoomPostMutationPayload' }
+    & Pick<CreateClassRoomPostMutationPayload, 'success' | 'message'>
+    & { post?: Maybe<(
+      { __typename?: 'ClassRoomPostTypeEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'ClassRoomPostType' }
+        & Pick<ClassRoomPostType, 'id' | 'datetime' | 'text'>
+        & { author: (
+          { __typename?: 'ALUserType' }
+          & Pick<AlUserType, 'id' | 'username' | 'firstName' | 'lastName'>
+          & { icon?: Maybe<(
+            { __typename?: 'PrivateMediaType' }
+            & Pick<PrivateMediaType, 'path'>
+          )> }
+        ) }
+      )> }
+    )> }
+  )> }
+);
+
+export type DoCreatePostCommentMutationVariables = Exact<{
+  input: CreateClassRoomPostCommentMutationInput;
+}>;
+
+
+export type DoCreatePostCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createClassroomPostComment?: Maybe<(
+    { __typename?: 'CreateClassRoomPostCommentMutationPayload' }
+    & Pick<CreateClassRoomPostCommentMutationPayload, 'success'>
+    & { comment?: Maybe<(
+      { __typename?: 'ClassRoomPostCommentTypeEdge' }
+      & Pick<ClassRoomPostCommentTypeEdge, 'cursor'>
+      & { node?: Maybe<(
+        { __typename?: 'ClassRoomPostCommentType' }
+        & Pick<ClassRoomPostCommentType, 'id' | 'datetime' | 'text'>
+        & { author: (
+          { __typename?: 'ALUserType' }
+          & Pick<AlUserType, 'id' | 'username' | 'firstName' | 'lastName'>
+          & { icon?: Maybe<(
+            { __typename?: 'PrivateMediaType' }
+            & Pick<PrivateMediaType, 'path'>
+          )> }
+        ) }
+      )> }
+    )> }
+  )> }
+);
+
 export type DoPasswordChangeMutationVariables = Exact<{
   oldPassword: Scalars['String'];
   newPassword1: Scalars['String'];
@@ -1151,6 +1444,9 @@ export type DoUpdateIconMutation = (
 
 export type GetClassRoomQueryVariables = Exact<{
   id: Scalars['ID'];
+  after?: Maybe<Scalars['String']>;
+  first: Scalars['Int'];
+  orderBy?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1165,6 +1461,27 @@ export type GetClassRoomQuery = (
     )>, myMembership?: Maybe<(
       { __typename?: 'ClassRoomMembershipType' }
       & Pick<ClassRoomMembershipType, 'memberType'>
+    )>, classroomPosts?: Maybe<(
+      { __typename?: 'ClassRoomPostTypeConnection' }
+      & { pageInfo: (
+        { __typename?: 'PageInfo' }
+        & Pick<PageInfo, 'hasNextPage' | 'startCursor' | 'endCursor'>
+      ), edges: Array<Maybe<(
+        { __typename?: 'ClassRoomPostTypeEdge' }
+        & Pick<ClassRoomPostTypeEdge, 'cursor'>
+        & { node?: Maybe<(
+          { __typename?: 'ClassRoomPostType' }
+          & Pick<ClassRoomPostType, 'id' | 'datetime' | 'text'>
+          & { author: (
+            { __typename?: 'ALUserType' }
+            & Pick<AlUserType, 'username' | 'firstName' | 'lastName'>
+            & { icon?: Maybe<(
+              { __typename?: 'PrivateMediaType' }
+              & Pick<PrivateMediaType, 'path'>
+            )> }
+          ) }
+        )> }
+      )>> }
     )>, classroomMembers: (
       { __typename?: 'ClassRoomMembershipTypeConnection' }
       & { edges: Array<Maybe<(
@@ -1174,7 +1491,7 @@ export type GetClassRoomQuery = (
           & Pick<ClassRoomMembershipType, 'memberType'>
           & { user: (
             { __typename?: 'ALUserType' }
-            & Pick<AlUserType, 'firstName' | 'lastName'>
+            & Pick<AlUserType, 'id' | 'username' | 'firstName' | 'lastName'>
             & { icon?: Maybe<(
               { __typename?: 'PrivateMediaType' }
               & Pick<PrivateMediaType, 'path'>
@@ -1188,7 +1505,7 @@ export type GetClassRoomQuery = (
 
 export type GetUserClassRoomsQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
-  first: Scalars['Int'];
+  first?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -1212,6 +1529,40 @@ export type GetUserClassRoomsQuery = (
           { __typename?: 'ClassRoomMembershipType' }
           & Pick<ClassRoomMembershipType, 'memberType'>
         )> }
+      )> }
+    )>> }
+  )> }
+);
+
+export type GetPostCommentsQueryVariables = Exact<{
+  orderBy?: Maybe<Scalars['String']>;
+  postId: Scalars['ID'];
+  after?: Maybe<Scalars['String']>;
+  first: Scalars['Int'];
+}>;
+
+
+export type GetPostCommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments?: Maybe<(
+    { __typename?: 'ClassRoomPostCommentTypeConnection' }
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'>
+    ), edges: Array<Maybe<(
+      { __typename?: 'ClassRoomPostCommentTypeEdge' }
+      & Pick<ClassRoomPostCommentTypeEdge, 'cursor'>
+      & { node?: Maybe<(
+        { __typename?: 'ClassRoomPostCommentType' }
+        & Pick<ClassRoomPostCommentType, 'id' | 'datetime' | 'text'>
+        & { author: (
+          { __typename?: 'ALUserType' }
+          & Pick<AlUserType, 'id' | 'username' | 'firstName' | 'lastName'>
+          & { icon?: Maybe<(
+            { __typename?: 'PrivateMediaType' }
+            & Pick<PrivateMediaType, 'path'>
+          )> }
+        ) }
       )> }
     )>> }
   )> }
@@ -1303,6 +1654,66 @@ export const DoRemoveMemberFromClassRoom = gql`
   }
 }
     `;
+export const DoUpdateMembershipType = gql`
+    mutation DoUpdateMembershipType($input: UpdateUserMembershipTypeInput!) {
+  updateUserMembershipType(input: $input) {
+    success
+    message
+    updatedMembership
+    updatedMember {
+      username
+    }
+  }
+}
+    `;
+export const DoCreateClassRoomPost = gql`
+    mutation DoCreateClassRoomPost($input: CreateClassRoomPostMutationInput!) {
+  createClassroomPost(input: $input) {
+    success
+    message
+    post {
+      node {
+        id
+        datetime
+        text
+        author {
+          id
+          username
+          firstName
+          lastName
+          icon {
+            path
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const DoCreatePostComment = gql`
+    mutation DoCreatePostComment($input: CreateClassRoomPostCommentMutationInput!) {
+  createClassroomPostComment(input: $input) {
+    success
+    comment {
+      cursor
+      node {
+        id
+        author {
+          id
+          username
+          firstName
+          lastName
+          icon {
+            path
+          }
+        }
+        datetime
+        text
+      }
+    }
+  }
+}
+    `;
 export const DoPasswordChange = gql`
     mutation DoPasswordChange($oldPassword: String!, $newPassword1: String!, $newPassword2: String!) {
   passwordChange(oldPassword: $oldPassword, newPassword1: $newPassword1, newPassword2: $newPassword2) {
@@ -1386,7 +1797,7 @@ export const DoUpdateIcon = gql`
 }
     `;
 export const GetClassRoom = gql`
-    query GetClassRoom($id: ID!) {
+    query GetClassRoom($id: ID!, $after: String, $first: Int!, $orderBy: String) {
   classroom(id: $id) {
     id
     name
@@ -1399,10 +1810,35 @@ export const GetClassRoom = gql`
     myMembership {
       memberType
     }
+    classroomPosts(orderBy: $orderBy, after: $after, first: $first) {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          author {
+            username
+            firstName
+            lastName
+            icon {
+              path
+            }
+          }
+          datetime
+          text
+        }
+      }
+    }
     classroomMembers {
       edges {
         node {
           user {
+            id
+            username
             firstName
             lastName
             icon {
@@ -1417,7 +1853,7 @@ export const GetClassRoom = gql`
 }
     `;
 export const GetUserClassRooms = gql`
-    query GetUserClassRooms($after: String, $first: Int!) {
+    query GetUserClassRooms($after: String, $first: Int) {
   myClassrooms(after: $after, first: $first) {
     pageInfo {
       hasNextPage
@@ -1438,6 +1874,35 @@ export const GetUserClassRooms = gql`
         myMembership {
           memberType
         }
+      }
+    }
+  }
+}
+    `;
+export const GetPostComments = gql`
+    query GetPostComments($orderBy: String, $postId: ID!, $after: String, $first: Int!) {
+  comments(postId: $postId, orderBy: $orderBy, after: $after, first: $first) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        author {
+          id
+          username
+          firstName
+          lastName
+          icon {
+            path
+          }
+        }
+        datetime
+        text
       }
     }
   }
