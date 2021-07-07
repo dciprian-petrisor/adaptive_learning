@@ -5,6 +5,7 @@ import * as GraphQLTypes from 'src/generated/graphql'
 export const GET_CURRENT_USER = gql`
 query GetCurrentUser {
     me {
+    hasCompletedQuiz,
     lastLogin,
     username,
     firstName,
@@ -16,6 +17,7 @@ query GetCurrentUser {
       path
     },
     requiresPasswordReset,
+    learningMaterialPreference,
     isAdmin,
     verified,
     secondaryEmail

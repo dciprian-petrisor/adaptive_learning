@@ -23,8 +23,8 @@ export default class RegisterForm extends mixins(PasswordValidationMixin) {
     this.loading = true
     return this.authStore.register({ email: this.email, username: this.username, firstName: this.firstName, lastName: this.lastName, password1: this.password, password2: this.password })
       .then(() => {
-        this.$q.notify({ message: 'Success!', type: 'positive' })
-        return this.$router.push({ name: 'dashboard' })
+        this.$q.notify({ message: 'Success! A verification e-mail has been sent.', type: 'positive' })
+        return this.$router.push({ name: 'login' })
       })
       .catch((err: ExpectedErrorType | ApolloError) => {
         notifyApolloError(this.$q, err)

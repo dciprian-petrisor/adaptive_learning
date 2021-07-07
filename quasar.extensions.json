@@ -11,6 +11,6 @@
       "typescript"
     ]
   },
-  "@quasar/apollo": {
-  }
+  "@quasar/apollo": {},
+  "@quasar/qmediaplayer": {}
 }

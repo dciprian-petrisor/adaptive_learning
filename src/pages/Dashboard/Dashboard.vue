@@ -1,11 +1,11 @@
 <template>
   <q-page class="column">
-    <q-infinite-scroll ref="infiniteScroll" @load="showMore" :disable="!hasNextPage" :offset="1">
+    <q-infinite-scroll ref="infiniteScroll" @load="showMore" :disable="!hasNextPage" :offset="1" style="max-width:100vw">
       <slot name="notifications" />
       <div class="column content-center">
         <h6>Welcome, {{ firstName }}!</h6>
       </div>
-      <div class="row wrap justify-md-start justify-center" style="padding: 0 7vw 0 7vw; margin: 0 0 0 5vw">
+      <div class="row wrap justify-md-start justify-center classroom-card" >
         <classroom-card
           v-for="(node, index) in classroomNodes"
           :key="index"
@@ -51,6 +51,7 @@
         @classroomCreated="onClassroomJoinedOrCreated"
       />
       <leave-class-room-dialog @classroomLeft="onClassRoomLeft" @showChanged="(v) => showLeaveClassRoomDialog = v" :show="showLeaveClassRoomDialog" :classroom="classroomToLeave"></leave-class-room-dialog>
+      <quiz-dialog @showDialogChanged="v => showQuizDialog = v" :showDialog="showQuizDialog"/>
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
           <q-spinner-dots color="primary" size="40px" />

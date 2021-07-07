@@ -4,7 +4,7 @@ import { AlUserType } from 'src/generated'
 import { formatMediaURI } from 'src/utils/rest'
 @Component({})
 export default class UserAvatar extends QAvatar {
-    @Prop({ type: Object, required: true }) readonly user!: AlUserType;
+    @Prop({ type: undefined, required: true }) readonly user?: AlUserType;
 
     get nameInitials () {
       if (!this.user) {

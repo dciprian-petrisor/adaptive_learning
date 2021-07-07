@@ -9,7 +9,7 @@
             :to="{ name: 'dashboard' }"
             style="text-decoration: none; color: inherit"
           >
-            <div style="width: fit-content" v-ripple.center class="relative-position">
+            <div style="width: fit-content" v-ripple.center class="relative-position main-title">
               <q-avatar size="xl">
                 <q-img alt="Logo" height="100%" src="~assets/logo-blue-small.svg" />
               </q-avatar>
@@ -41,7 +41,7 @@
     </q-header>
 
     <q-drawer overlay v-model="left" side="left" elevated>
-      <q-scroll-area style="height: calc(100% - 150px)">
+      <q-scroll-area style="height: 100%">
         <q-list padding>
           <q-item clickable v-ripple :to="{ name: 'dashboard' }">
             <q-item-section avatar>
@@ -49,15 +49,8 @@
             </q-item-section>
             <q-item-section> Classes </q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="event_available" />
-            </q-item-section>
-            <q-item-section> Calendar </q-item-section>
-          </q-item>
-
           <template v-if="classrooms">
-            <q-separator />
+            <q-separator inset />
             <q-item>
               <q-item-label header>Enrolled Classrooms</q-item-label>
             </q-item>

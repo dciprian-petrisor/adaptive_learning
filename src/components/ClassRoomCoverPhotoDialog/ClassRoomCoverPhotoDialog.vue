@@ -1,13 +1,13 @@
 <template>
- <q-dialog v-model="shouldShow">
-      <q-card class="cropper-dialog">
-        <q-card-section>
-          <q-stepper v-model="step" header-nav ref="stepper" animated>
+ <q-dialog v-model="shouldShow" >
+      <q-card class="cropper-dialog" style="min-width:30vw; max-width:70vw">
+        <q-card-section >
+          <q-stepper v-model="step" header-nav ref="stepper" animated contracted>
             <q-step
               :name="1"
-              title="Upload a cover photo"
               color="grey-3"
               icon="photo_size_select_actual"
+              title=""
               :done="step > 1"
               :header-nav="step > 1"
             >
@@ -17,6 +17,7 @@
                 color="secondary"
                 max-file-size="1048576"
                 max-files="1"
+                style="width: auto;"
                 hide-upload-btn
                 accept=".jpg,.jpeg,.bmp,.png"
                 :filesList="filesList"
@@ -36,7 +37,7 @@
             </q-step>
             <q-step
               :name="2"
-              title="Crop picture"
+              title=""
               icon="crop"
               :color="step == 2 ? 'grey-3' : ''"
               :done="step > 2"

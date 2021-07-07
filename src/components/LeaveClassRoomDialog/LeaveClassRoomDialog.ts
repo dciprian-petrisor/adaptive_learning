@@ -25,7 +25,7 @@ export default class LeaveClassRoomDialog extends Vue {
       store.leaveClassRoom({ input: { id: this.classroom.id } })
         .then(() => {
           this.$q.notify({ message: 'Successfully left classroom.', type: 'positive' })
-          this.$emit('classroomLeft')
+          this.$emit('classroomLeft', this.classroom)
         })
         .catch((err: ApolloError| ExpectedErrorType) => {
           notifyApolloError(this.$q, err)

@@ -17,7 +17,7 @@ export default class ProfilePasswordForm extends mixins(PasswordValidationMixin)
       store.changePassword({ oldPassword: this.currentPassword, newPassword1: this.newPassword, newPassword2: this.confirmPassword })
         .then(async () => {
           this.$q.notify({ message: 'Password updated sucessfully', type: 'positive' })
-          await store.updateAccountDetails({ requiresPasswordReset: false })
+          await store.updateAccountDetails({ requiresPasswordReset: false, firstName: store.user?.firstName, hasCompletedQuiz: store.user?.hasCompletedQuiz, lastName: store.user?.lastName, learningMaterialPreference: store.user?.learningMaterialPreference })
         })
         .catch((err: ExpectedErrorType | ApolloError) => {
           notifyApolloError(this.$q, err)

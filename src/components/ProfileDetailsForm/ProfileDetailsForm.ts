@@ -15,7 +15,7 @@ export default class ProfileDetailsForm extends Vue {
     }
 
     onSubmit () {
-      store.updateAccountDetails({ firstName: this.updatedFirstName, lastName: this.updatedLastName })
+      store.updateAccountDetails({ firstName: this.updatedFirstName, lastName: this.updatedLastName, hasCompletedQuiz: store.user?.hasCompletedQuiz, requiresPasswordReset: store.user?.requiresPasswordReset, learningMaterialPreference: store.user?.learningMaterialPreference })
         .then(() => {
           this.$q.notify({ message: 'Account details updated successfully.', type: 'positive' })
         })

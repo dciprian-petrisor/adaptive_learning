@@ -1,16 +1,16 @@
 <template>
-     <q-card>
+     <q-card class="classroom-feed-card">
             <q-img :src="classRoomCoverPhoto" style="height:350px;" img-class="darkened-bg">
-              <div class="absolute-top text-h3 text-left" style="margin: 30px; background: none;">
-                <span >{{classroom.name}}</span>
+              <div class="absolute-top text-h3 text-left" style="margin-top: 50px; background: none; word-break: all">
+                <span>{{classroom.name}}</span>
                 <br/>
-                <span class="text-subtitle2" >{{classroom.description}}</span>
+                <span class="text-subtitle2" style="margin: 2%;" >{{classroom.description}}</span>
                 </div>
-              <div
+              <div v-if="isClassroomAdmin"
                 class="absolute-bottom text-left column"
-                style="margin: 30px 50px 50px 30px; background: none;"
+                style="margin: 1% ; background: none;"
               >
-                <span >Access code</span>
+                <span>Access code</span>
                 <div>
                   <q-btn
                     flat

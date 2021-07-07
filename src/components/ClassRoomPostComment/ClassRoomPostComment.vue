@@ -15,7 +15,7 @@
         </q-item-section>
       </q-item>
       <q-item>
-        <q-item-section> {{ text}} </q-item-section>
+        <q-item-section style="overflow-wrap: anywhere"> {{ text}} </q-item-section>
       </q-item>
     </q-card-section>
 </template>

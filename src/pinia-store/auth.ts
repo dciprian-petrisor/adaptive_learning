@@ -76,6 +76,16 @@ export const useAuthStore = defineStore({
               if (payload.lastName) {
                 user.lastName = payload.lastName
               }
+              if (payload.hasCompletedQuiz) {
+                user.hasCompletedQuiz = payload.hasCompletedQuiz
+              }
+              if (payload.requiresPasswordReset) {
+                user.requiresPasswordReset = payload.requiresPasswordReset
+              }
+
+              if (payload.learningMaterialPreference) {
+                user.learningMaterialPreference = payload.learningMaterialPreference as GraphQLTypes.AlUserLearningMaterialPreference
+              }
               this.user = user
               return true
             } else {
@@ -137,16 +147,11 @@ export const useAuthStore = defineStore({
     },
     register (payload: GraphQLTypes.DoRegisterMutationVariables) {
       return register(payload)
-        .then(async (response) => {
+        .then((response) => {
           if (response.data?.register) {
             const registerResult = response.data.register
-            if (registerResult.success && registerResult.refreshToken && registerResult.token) {
-              this.$patch({
-                loggedIn: true,
-                refreshToken: registerResult.refreshToken,
-                token: registerResult.token
-              })
-              return await this.loadUser()
+            if (registerResult.success) {
+              return registerResult
             } else if (registerResult.errors) {
               throw registerResult.errors
             }
@@ -186,6 +191,9 @@ export const useAuthStore = defineStore({
       const response = await getCurrentUser()
       if (response.data?.me && isUserNode(response.data.me)) {
         this.user = deepcopy(response.data.me)
+        if (response.data?.me?.learningMaterialPreference) {
+          this.user.learningMaterialPreference = response.data.me.learningMaterialPreference.toLocaleLowerCase() as GraphQLTypes.AlUserLearningMaterialPreference
+        }
       }
     }
   }

@@ -2,11 +2,11 @@
  <q-dialog v-model="shouldShow">
       <q-card class="cropper-dialog">
         <q-card-section>
-          <q-stepper v-model="step" header-nav ref="stepper" animated>
+          <q-stepper v-model="step" header-nav ref="stepper" animated contracted>
             <q-step
               :name="1"
-              title="Upload a picture"
               color="grey-3"
+              title=""
               icon="photo_size_select_actual"
               :done="step > 1"
               :header-nav="step > 1"
@@ -22,6 +22,7 @@
                 :filesList="filesList"
                 @fileAdded="addFile"
                 @fileRemoved="removeFile"
+                style="max-width: 60vw"
                 flat
               />
 
@@ -36,8 +37,8 @@
             </q-step>
             <q-step
               :name="2"
-              title="Crop picture"
               icon="crop"
+              title=""
               :color="step == 2 ? 'grey-3' : ''"
               :done="step > 2"
               :header-nav="step > 2"

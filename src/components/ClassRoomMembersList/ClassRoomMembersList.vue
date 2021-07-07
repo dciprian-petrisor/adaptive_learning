@@ -5,7 +5,7 @@
         <span class="text-h5 text-weight-regular q-ml-sm">Teachers</span>
       </div>
     </q-card-section>
-    <q-separator class="q-mx-lg" />
+    <q-separator inset />
     <q-card-section>
       <q-list>
         <template v-for="(teacher, index) in teachers">
@@ -46,7 +46,7 @@
         <span class="text-h5 text-weight-regular q-ml-sm">Students</span>
       </div>
     </q-card-section>
-    <q-separator class="q-mx-lg" />
+    <q-separator inset />
     <q-card-section>
       <q-list>
         <template v-for="(student, index) in students">
@@ -78,6 +78,9 @@
           </q-item>
         </template>
       </q-list>
+      <q-card-section v-if="students.length === 0">
+        No students have been added yet.
+      </q-card-section>
     </q-card-section>
     <q-dialog v-model="shouldShowConfirmRemoveDialog" persistent>
       <q-card>
@@ -93,7 +96,13 @@
             v-close-popup
             @click="endRemoveMember"
           />
-          <q-btn flat label="Cancel" color="primary" v-close-popup @click="memberForRemoval = null" />
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            v-close-popup
+            @click="memberForRemoval = null"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>

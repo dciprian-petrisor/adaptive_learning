@@ -7,8 +7,13 @@ import CreateClassRoomDialog from 'src/components/CreateClassRoomDialog/CreateCl
 import { QInfiniteScroll } from 'quasar'
 import JoinClassRoomDialog from 'src/components/JoinClassRoomDialog/JoinClassRoomDialog.vue'
 import LeaveClassRoomDialog from 'src/components/LeaveClassRoomDialog/LeaveClassRoomDialog.vue'
+import QuizDialog from 'src/components/QuizDialog/QuizDialog.vue'
+import deepcopy from 'deepcopy'
+
+const store = useAuthStore()
+
 @Component({
-  components: { 'classroom-card': ClassRoomCard, CreateClassRoomDialog, JoinClassRoomDialog, LeaveClassRoomDialog },
+  components: { 'classroom-card': ClassRoomCard, CreateClassRoomDialog, JoinClassRoomDialog, LeaveClassRoomDialog, QuizDialog },
   apollo: {
     myClassrooms: {
       query: GET_USER_CLASSROOMS,
@@ -40,6 +45,7 @@ export default class PageDashboard extends Vue {
   showCreateClassroomDialog = false;
   showJoinClassroomDialog = false;
   showLeaveClassRoomDialog = false;
+  showQuizDialog = !store.user?.hasCompletedQuiz;
   classroomToLeave: ClassRoomType | unknown = {};
 
   get classroomNodes () {
@@ -54,16 +60,16 @@ export default class PageDashboard extends Vue {
   }
 
   get firstName () {
-    const store = useAuthStore()
     if (store.user?.firstName) {
       return store.user.firstName
     }
     return 'user'
   }
 
-  onClassRoomLeft () {
-    this.$refs.infiniteScroll.reset()
-    return this.$apollo.queries.myClassrooms.refetch()
+  onClassRoomLeft (classroom: ClassRoomType) {
+    const cloned = deepcopy(this.myClassrooms)
+    cloned.edges = cloned.edges.filter(x => x?.node?.id !== classroom.id)
+    this.myClassrooms = cloned
   }
 
   onClassroomJoinedOrCreated (c: ClassRoomType) {

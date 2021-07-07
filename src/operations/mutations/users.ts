@@ -14,8 +14,8 @@ mutation DoPasswordChange($oldPassword: String!, $newPassword1: String!, $newPas
 `
 
 export const DO_UPDATE_ACCOUNT_DETAILS = gql`
-mutation DoUpdateAccount($firstName: String, $lastName: String, $requiresPasswordReset: Boolean) {
- updateAccount(firstName:$firstName, lastName:$lastName, requiresPasswordReset: $requiresPasswordReset){
+mutation DoUpdateAccount($firstName: String, $lastName: String, $requiresPasswordReset: Boolean, $hasCompletedQuiz: Boolean, $learningMaterialPreference: String) {
+ updateAccount(firstName: $firstName, lastName: $lastName, requiresPasswordReset: $requiresPasswordReset, hasCompletedQuiz: $hasCompletedQuiz, learningMaterialPreference: $learningMaterialPreference){
     success,
     errors
   }
@@ -42,9 +42,7 @@ export const DO_REGISTER = gql`
 mutation DoRegister($firstName: String!, $lastName: String!, $email: String!, $username: String!, $password1: String!, $password2: String!) {
   register(email: $email, username: $username, password1: $password1, password2: $password2, firstName: $firstName, lastName: $lastName) {
         success,
-        errors,
-        token,
-        refreshToken
+        errors
     }
 }
 `

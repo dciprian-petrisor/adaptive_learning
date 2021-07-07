@@ -2,7 +2,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import UserAvatar from 'src/components/UserAvatar/UserAvatar.vue'
 import { useAuthStore, useClassRoomStore } from 'src/pinia-store'
 import { ApolloError } from '@apollo/client/errors'
-import { ClassRoomType, ClassRoomTypeEdge, ExpectedErrorType, PrivateMediaType } from 'src/generated'
+import { ClassRoomTypeEdge, ExpectedErrorType, PrivateMediaType } from 'src/generated'
 import { notifyApolloError } from 'src/utils/errors'
 import { formatMediaURI } from 'src/utils/rest'
 const classroomStore = useClassRoomStore()

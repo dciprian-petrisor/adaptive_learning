@@ -26,6 +26,11 @@ query GetClassRoom($id: ID!, $after: String, $first:Int!, $orderBy: String) {
         cursor
         node {
           id,
+          hasAttachments,
+          postAttachments {
+            originalFileName,
+            path
+          },
           author {
             username,
             firstName,
@@ -116,6 +121,42 @@ query GetPostComments($orderBy: String, $postId: ID!, $after: String, $first: In
   }
 }
 `
+
+export const GET_CLASSROOM_MATERIALS = gql`
+query GetClassroomMaterials ($orderBy: String, $classroomId: ID!, $after: String, $first: Int!, $materialType: String) {
+  classroomMaterials(classroomId:$classroomId, orderBy:$orderBy, first:$first, after:$after, materialType:$materialType){
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor,
+      node {
+        mimeType,
+        materialType,
+        datetime,
+        author  {
+          firstName,
+          lastName,
+          icon {
+            path
+          }
+        },
+        originalFileName,
+        path
+      }
+    }
+  }
+}`
+
+export const getClassroomMaterials = function (payload: GraphQLTypes.GetClassroomMaterialsQueryVariables) {
+  return apolloClient.query<GraphQLTypes.GetClassroomMaterialsQuery, GraphQLTypes.GetClassroomMaterialsQueryVariables>({
+    query: GraphQLTypes.GetClassroomMaterials,
+    variables: payload
+  })
+}
 
 export const getClassRoom = function (payload: GraphQLTypes.GetClassRoomQueryVariables) {
   return apolloClient.query<GraphQLTypes.GetClassRoomQuery, GraphQLTypes.GetClassRoomQueryVariables>({

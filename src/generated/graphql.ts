@@ -78,7 +78,10 @@ export type AllowSelfAlUserType = Node & {
   icon?: Maybe<PrivateMediaType>;
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
+  hasCompletedQuiz: Scalars['Boolean'];
+  learningMaterialPreference: AlUserLearningMaterialPreference;
   classroomMemberships: ClassRoomMembershipTypeConnection;
+  materials: ClassRoomMaterialTypeConnection;
   posts: ClassRoomPostTypeConnection;
   postComments: ClassRoomPostCommentTypeConnection;
   /** Designates that this user has all permissions without explicitly assigning them. */
@@ -102,6 +105,15 @@ export type AllowSelfAlUserTypeClassroomMembershipsArgs = {
 };
 
 
+export type AllowSelfAlUserTypeMaterialsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
 export type AllowSelfAlUserTypePostsArgs = {
   offset?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
@@ -122,6 +134,14 @@ export type AllowSelfAlUserTypePostCommentsArgs = {
   text?: Maybe<Scalars['String']>;
   post?: Maybe<Scalars['ID']>;
 };
+
+/** An enumeration. */
+export enum AlUserLearningMaterialPreference {
+  /** Visual */
+  Visual = 'VISUAL',
+  /** Verbal */
+  Verbal = 'VERBAL'
+}
 
 export type AlUserType = Node & {
   __typename?: 'ALUserType';
@@ -161,6 +181,44 @@ export type ArchiveAccount = {
   __typename?: 'ArchiveAccount';
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
+};
+
+/** An enumeration. */
+export enum ClassRoomMaterialMaterialType {
+  /** Visual */
+  Visual = 'VISUAL',
+  /** Verbal */
+  Verbal = 'VERBAL'
+}
+
+export type ClassRoomMaterialType = Node & {
+  __typename?: 'ClassRoomMaterialType';
+  mimeType: Scalars['String'];
+  materialType: ClassRoomMaterialMaterialType;
+  datetime: Scalars['DateTime'];
+  author: AlUserType;
+  classroom: ClassRoomType;
+  originalFileName?: Maybe<Scalars['String']>;
+  path: Scalars['String'];
+  /** The ID of the object. */
+  id: Scalars['ID'];
+};
+
+export type ClassRoomMaterialTypeConnection = {
+  __typename?: 'ClassRoomMaterialTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<ClassRoomMaterialTypeEdge>>;
+};
+
+/** A Relay edge containing a `ClassRoomMaterialType` and its cursor. */
+export type ClassRoomMaterialTypeEdge = {
+  __typename?: 'ClassRoomMaterialTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<ClassRoomMaterialType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
 };
 
 /** An enumeration. */
@@ -235,6 +293,8 @@ export type ClassRoomPostType = Node & {
   text: Scalars['String'];
   classroom: ClassRoomType;
   postComments: ClassRoomPostCommentTypeConnection;
+  postAttachments: Array<PrivateMediaType>;
+  hasAttachments?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -273,6 +333,7 @@ export type ClassRoomType = Node & {
   description: Scalars['String'];
   coverPhoto?: Maybe<PrivateMediaType>;
   classroomMembers: ClassRoomMembershipTypeConnection;
+  classroomMaterials: ClassRoomMaterialTypeConnection;
   /** The ID of the object. */
   id: Scalars['ID'];
   accessCode?: Maybe<Scalars['String']>;
@@ -290,6 +351,15 @@ export type ClassRoomTypeClassroomMembersArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+
+export type ClassRoomTypeClassroomMaterialsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -352,6 +422,9 @@ export type CreateClassRoomPostCommentMutationPayload = {
 };
 
 export type CreateClassRoomPostMutationInput = {
+  mimeTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  materialTypes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  files?: Maybe<Array<Maybe<Scalars['Upload']>>>;
   datetime: Scalars['DateTime'];
   text: Scalars['String'];
   classroomId: Scalars['String'];
@@ -612,7 +685,9 @@ export type MutationDeleteAccountArgs = {
 export type MutationUpdateAccountArgs = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
+  hasCompletedQuiz?: Maybe<Scalars['Boolean']>;
   requiresPasswordReset?: Maybe<Scalars['Boolean']>;
+  learningMaterialPreference?: Maybe<Scalars['String']>;
 };
 
 
@@ -772,6 +847,7 @@ export type PasswordReset = {
 
 export type PrivateMediaType = {
   __typename?: 'PrivateMediaType';
+  post?: Maybe<ClassRoomPostType>;
   originalFileName?: Maybe<Scalars['String']>;
   path: Scalars['String'];
   aluser?: Maybe<AlUserType>;
@@ -789,6 +865,7 @@ export type Query = {
   classroom?: Maybe<ClassRoomType>;
   /** The ID of the object */
   post?: Maybe<ClassRoomPostType>;
+  classroomMaterials?: Maybe<ClassRoomMaterialTypeConnection>;
   comments?: Maybe<ClassRoomPostCommentTypeConnection>;
 };
 
@@ -833,6 +910,24 @@ export type QueryClassroomArgs = {
 
 export type QueryPostArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryClassroomMaterialsArgs = {
+  classroomId?: Maybe<Scalars['ID']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  mimeType?: Maybe<Scalars['String']>;
+  materialType?: Maybe<Scalars['String']>;
+  datetime?: Maybe<Scalars['DateTime']>;
+  author?: Maybe<Scalars['ID']>;
+  classroom?: Maybe<Scalars['ID']>;
+  originalFileName?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  orderBy?: Maybe<Scalars['String']>;
 };
 
 
@@ -884,8 +979,6 @@ export type Register = {
   __typename?: 'Register';
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
-  refreshToken?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
 };
 
 export type RemoveMemberFromClassRoomMutationInput = {
@@ -1048,7 +1141,10 @@ export type UserNode = Node & {
   icon?: Maybe<PrivateMediaType>;
   requiresPasswordReset: Scalars['Boolean'];
   isAdmin: Scalars['Boolean'];
+  hasCompletedQuiz: Scalars['Boolean'];
+  learningMaterialPreference: AlUserLearningMaterialPreference;
   classroomMemberships: ClassRoomMembershipTypeConnection;
+  materials: ClassRoomMaterialTypeConnection;
   posts: ClassRoomPostTypeConnection;
   postComments: ClassRoomPostCommentTypeConnection;
   classrooms: ClassRoomTypeConnection;
@@ -1068,6 +1164,15 @@ export type UserNodeClassroomMembershipsArgs = {
   user?: Maybe<Scalars['ID']>;
   classroom?: Maybe<Scalars['ID']>;
   memberType?: Maybe<Scalars['String']>;
+};
+
+
+export type UserNodeMaterialsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1277,8 +1382,11 @@ export type DoCreateClassRoomPostMutation = (
       { __typename?: 'ClassRoomPostTypeEdge' }
       & { node?: Maybe<(
         { __typename?: 'ClassRoomPostType' }
-        & Pick<ClassRoomPostType, 'id' | 'datetime' | 'text'>
-        & { author: (
+        & Pick<ClassRoomPostType, 'id' | 'datetime' | 'text' | 'hasAttachments'>
+        & { postAttachments: Array<(
+          { __typename?: 'PrivateMediaType' }
+          & Pick<PrivateMediaType, 'originalFileName' | 'path'>
+        )>, author: (
           { __typename?: 'ALUserType' }
           & Pick<AlUserType, 'id' | 'username' | 'firstName' | 'lastName'>
           & { icon?: Maybe<(
@@ -1339,6 +1447,8 @@ export type DoUpdateAccountMutationVariables = Exact<{
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   requiresPasswordReset?: Maybe<Scalars['Boolean']>;
+  hasCompletedQuiz?: Maybe<Scalars['Boolean']>;
+  learningMaterialPreference?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1382,7 +1492,7 @@ export type DoRegisterMutation = (
   { __typename?: 'Mutation' }
   & { register?: Maybe<(
     { __typename?: 'Register' }
-    & Pick<Register, 'success' | 'errors' | 'token' | 'refreshToken'>
+    & Pick<Register, 'success' | 'errors'>
   )> }
 );
 
@@ -1471,8 +1581,11 @@ export type GetClassRoomQuery = (
         & Pick<ClassRoomPostTypeEdge, 'cursor'>
         & { node?: Maybe<(
           { __typename?: 'ClassRoomPostType' }
-          & Pick<ClassRoomPostType, 'id' | 'datetime' | 'text'>
-          & { author: (
+          & Pick<ClassRoomPostType, 'id' | 'hasAttachments' | 'datetime' | 'text'>
+          & { postAttachments: Array<(
+            { __typename?: 'PrivateMediaType' }
+            & Pick<PrivateMediaType, 'originalFileName' | 'path'>
+          )>, author: (
             { __typename?: 'ALUserType' }
             & Pick<AlUserType, 'username' | 'firstName' | 'lastName'>
             & { icon?: Maybe<(
@@ -1568,6 +1681,41 @@ export type GetPostCommentsQuery = (
   )> }
 );
 
+export type GetClassroomMaterialsQueryVariables = Exact<{
+  orderBy?: Maybe<Scalars['String']>;
+  classroomId: Scalars['ID'];
+  after?: Maybe<Scalars['String']>;
+  first: Scalars['Int'];
+  materialType?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetClassroomMaterialsQuery = (
+  { __typename?: 'Query' }
+  & { classroomMaterials?: Maybe<(
+    { __typename?: 'ClassRoomMaterialTypeConnection' }
+    & { pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'>
+    ), edges: Array<Maybe<(
+      { __typename?: 'ClassRoomMaterialTypeEdge' }
+      & Pick<ClassRoomMaterialTypeEdge, 'cursor'>
+      & { node?: Maybe<(
+        { __typename?: 'ClassRoomMaterialType' }
+        & Pick<ClassRoomMaterialType, 'mimeType' | 'materialType' | 'datetime' | 'originalFileName' | 'path'>
+        & { author: (
+          { __typename?: 'ALUserType' }
+          & Pick<AlUserType, 'firstName' | 'lastName'>
+          & { icon?: Maybe<(
+            { __typename?: 'PrivateMediaType' }
+            & Pick<PrivateMediaType, 'path'>
+          )> }
+        ) }
+      )> }
+    )>> }
+  )> }
+);
+
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1575,7 +1723,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'AllowSelfALUserType' }
-    & Pick<AllowSelfAlUserType, 'lastLogin' | 'username' | 'firstName' | 'lastName' | 'email' | 'isActive' | 'requiresPasswordReset' | 'isAdmin' | 'verified' | 'secondaryEmail'>
+    & Pick<AllowSelfAlUserType, 'hasCompletedQuiz' | 'lastLogin' | 'username' | 'firstName' | 'lastName' | 'email' | 'isActive' | 'requiresPasswordReset' | 'learningMaterialPreference' | 'isAdmin' | 'verified' | 'secondaryEmail'>
     & { icon?: Maybe<(
       { __typename?: 'PrivateMediaType' }
       & Pick<PrivateMediaType, 'originalFileName' | 'path'>
@@ -1676,6 +1824,11 @@ export const DoCreateClassRoomPost = gql`
         id
         datetime
         text
+        hasAttachments
+        postAttachments {
+          originalFileName
+          path
+        }
         author {
           id
           username
@@ -1725,8 +1878,8 @@ export const DoPasswordChange = gql`
 }
     `;
 export const DoUpdateAccount = gql`
-    mutation DoUpdateAccount($firstName: String, $lastName: String, $requiresPasswordReset: Boolean) {
-  updateAccount(firstName: $firstName, lastName: $lastName, requiresPasswordReset: $requiresPasswordReset) {
+    mutation DoUpdateAccount($firstName: String, $lastName: String, $requiresPasswordReset: Boolean, $hasCompletedQuiz: Boolean, $learningMaterialPreference: String) {
+  updateAccount(firstName: $firstName, lastName: $lastName, requiresPasswordReset: $requiresPasswordReset, hasCompletedQuiz: $hasCompletedQuiz, learningMaterialPreference: $learningMaterialPreference) {
     success
     errors
   }
@@ -1752,8 +1905,6 @@ export const DoRegister = gql`
   register(email: $email, username: $username, password1: $password1, password2: $password2, firstName: $firstName, lastName: $lastName) {
     success
     errors
-    token
-    refreshToken
   }
 }
     `;
@@ -1820,6 +1971,11 @@ export const GetClassRoom = gql`
         cursor
         node {
           id
+          hasAttachments
+          postAttachments {
+            originalFileName
+            path
+          }
           author {
             username
             firstName
@@ -1908,9 +2064,39 @@ export const GetPostComments = gql`
   }
 }
     `;
+export const GetClassroomMaterials = gql`
+    query GetClassroomMaterials($orderBy: String, $classroomId: ID!, $after: String, $first: Int!, $materialType: String) {
+  classroomMaterials(classroomId: $classroomId, orderBy: $orderBy, first: $first, after: $after, materialType: $materialType) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        mimeType
+        materialType
+        datetime
+        author {
+          firstName
+          lastName
+          icon {
+            path
+          }
+        }
+        originalFileName
+        path
+      }
+    }
+  }
+}
+    `;
 export const GetCurrentUser = gql`
     query GetCurrentUser {
   me {
+    hasCompletedQuiz
     lastLogin
     username
     firstName
@@ -1922,6 +2108,7 @@ export const GetCurrentUser = gql`
       path
     }
     requiresPasswordReset
+    learningMaterialPreference
     isAdmin
     verified
     secondaryEmail

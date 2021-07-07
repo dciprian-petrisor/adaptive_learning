@@ -3,7 +3,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { copyToClipboard } from 'quasar'
 import ClassRoomCoverPhotoDialog from '../ClassRoomCoverPhotoDialog/ClassRoomCoverPhotoDialog.vue'
 import { formatMediaURI } from 'src/utils/rest'
-import deepcopy from 'deepcopy'
 
 @Component({
   components: { ClassRoomCoverPhotoDialog }
@@ -24,16 +23,12 @@ export default class ClassRoomFeedCard extends Vue {
       if (!membershipType) {
         return false
       } else {
-        return membershipType === ClassRoomMembershipMemberType.Owner || ClassRoomMembershipMemberType.Teacher
+        return membershipType === ClassRoomMembershipMemberType.Owner || membershipType === ClassRoomMembershipMemberType.Teacher
       }
     }
 
     onCoverPhotoUploadSuccess (newPath: PrivateMediaType) {
-      const clone = deepcopy(this.classroom)
-      if (this.classroom.coverPhoto) {
-        clone.coverPhoto = newPath
-        this.classroom = clone
-      }
+      this.$emit('coverPhotoUpload', newPath)
     }
 
     onCopyAccessCode () {

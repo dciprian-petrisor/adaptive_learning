@@ -56,19 +56,19 @@ module.exports = configure(function (ctx) {
         GRAPHQL_BACKEND_URL: (process.env.BACKEND_URL || 'http://localhost') + '/graphql/',
         REST_BACKEND_URL: process.env.BACKEND_URL || 'http://localhost'
       },
-      // chainWebpack (chain, { isServer, isClient }) {
-      //   chain.module.rule('vue')
-      //     .use('vue-loader')
-      //     .loader('vue-loader')
-      //     .tap(options => {
-      //       options.transpileOptions = {
-      //         transforms: {
-      //           dangerousTaggedTemplateString: true
-      //         }
-      //       }
-      //       return options
-      //     })
-      // },
+      chainWebpack (chain, { isServer, isClient }) {
+        chain.module.rule('vue')
+          .use('vue-loader')
+          .loader('vue-loader')
+          .tap(options => {
+            options.transpileOptions = {
+              transforms: {
+                dangerousTaggedTemplateString: true
+              }
+            }
+            return options
+          })
+      },
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // transpile: false,
@@ -113,7 +113,8 @@ module.exports = configure(function (ctx) {
       lang: 'en-us', // Quasar language pack
       cssAddon: true,
       config: {
-        dark: true
+        dark: true,
+        loading: {}
       },
 
       // Possible values for "importStrategy":
@@ -129,7 +130,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'Loading']
     },
 
     animations: 'all', // --- includes all animations

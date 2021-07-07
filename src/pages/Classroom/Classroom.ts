@@ -1,15 +1,17 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import MaterialsTab from 'src/components/MaterialsTab/MaterialsTab.vue'
 import AnnouncementCard from 'src/components/AnnouncementCard/AnnouncementCard.vue'
 import ClassRoomFeedCard from 'src/components/ClassRoomFeedCard/ClassRoomFeedCard.vue'
 import { GET_CLASSROOM } from 'src/operations/queries/classroom'
-import { ClassRoomMembershipTypeConnection, ClassRoomType, CreateClassRoomPostMutationPayload, UpdateUserMembershipTypePayload } from 'src/generated'
+import { ClassRoomMembershipTypeConnection, ClassRoomType, CreateClassRoomPostMutationPayload, PrivateMediaType, UpdateUserMembershipTypePayload } from 'src/generated'
 import ClassRoomMembersList from 'src/components/ClassRoomMembersList/ClassRoomMembersList.vue'
 import deepcopy from 'deepcopy'
 import ClassRoomPost from 'src/components/ClassRoomPost/ClassRoomPost.vue'
 import { QInfiniteScroll } from 'quasar'
-
+import { useAuthStore } from 'src/pinia-store'
+const store = useAuthStore()
 @Component({
-  components: { AnnouncementCard, ClassRoomFeedCard, 'class-room-members-list': ClassRoomMembersList, ClassRoomPost },
+  components: { AnnouncementCard, ClassRoomFeedCard, 'class-room-members-list': ClassRoomMembersList, ClassRoomPost, MaterialsTab },
   apollo: {
     classroom: {
       query: GET_CLASSROOM,
@@ -46,6 +48,7 @@ export default class PageClassroom extends Vue {
   orderBy= '-datetime'
   classroom: ClassRoomType | unknown = {};
   tab = 'feed';
+  materialsTab = 'recommended';
 
   get classRoomPosts () {
     const clsroom = this.classroom as ClassRoomType
@@ -63,6 +66,10 @@ export default class PageClassroom extends Vue {
     return posts
   }
 
+  get recommendedMaterialType () {
+    return store.user?.learningMaterialPreference
+  }
+
   onAnnouncementCreated (payload: CreateClassRoomPostMutationPayload) {
     if (!payload.post) {
       return
@@ -77,6 +84,12 @@ export default class PageClassroom extends Vue {
     const cloned = deepcopy(this.classroom) as ClassRoomType
     cloned.classroomMembers = members
     this.classroom = cloned
+  }
+
+  onCoverPhotoUpload (newPath: PrivateMediaType) {
+    const clone = deepcopy(this.classroom) as ClassRoomType
+    clone.coverPhoto = newPath
+    this.classroom = clone
   }
 
   membershipUpdated (update: UpdateUserMembershipTypePayload) {

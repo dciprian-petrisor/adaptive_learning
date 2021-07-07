@@ -8,9 +8,9 @@ import { GET_POST_COMMENTS } from 'src/operations/queries/classroom'
 import deepcopy from 'deepcopy'
 import { ApolloError } from '@apollo/client/errors'
 import { notifyApolloError } from 'src/utils/errors'
+import { formatMediaURI } from 'src/utils/rest'
 
 const store = useAuthStore()
-
 const classroomStore = useClassRoomStore()
 
 @Component({
@@ -44,6 +44,8 @@ export default class ClassRoomPost extends Vue {
   after = ''
   hasNextPage = false
   comments!:ClassRoomPostCommentTypeConnection;
+  materialsExpanded = false
+
   get author () {
     return this.post.author
   }
@@ -83,6 +85,10 @@ export default class ClassRoomPost extends Vue {
       .finally(() => {
         this.newComment = ''
       })
+  }
+
+  formatDownloadLink (path: string) {
+    return formatMediaURI(path)
   }
 
   async showMore () {

@@ -99,6 +99,11 @@ mutation DoCreateClassRoomPost($input: CreateClassRoomPostMutationInput!) {
         id,
         datetime,
         text,
+        hasAttachments,
+        postAttachments {
+          originalFileName,
+          path
+        },
         author {
           id,
           username,
